@@ -13,7 +13,6 @@ Projekto autoriai:
 | Justas Gabulas       | IFF-8/8         |
 | Paulius Žilinskas    | IFF-8/5         |
 | Simonas Jonikas      | IFF-8/9         |
-| -------------------- | --------------- |
 
 __KAUNAS 2020__
 
