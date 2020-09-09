@@ -33,7 +33,7 @@ namespace ISP_Biblioteka.Controllers
             }
             mysql.Close();
 
-            return View();
+            return View(list1);
         }
     }
 }
