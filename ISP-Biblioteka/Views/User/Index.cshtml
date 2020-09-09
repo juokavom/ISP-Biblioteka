@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ISP_Biblioteka.Models.User>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+        </tr>
+        @foreach (ISP_Biblioteka.Models.User details in Model)
+        {
+            <tr>
+                <th>@details.Name</th>
+                <th>@details.Id</th>
+            </tr>
+        }
+    </table>
+    <div> 
+    </div>
+</body>
+</html>
