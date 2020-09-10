@@ -15,7 +15,7 @@ namespace ISP_Biblioteka.Controllers
         // GET: User
         public ActionResult Index()
         {
-            List<User> list1 = new List<User>();
+            /*List<User> list1 = new List<User>();
             string mainconn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
             MySqlConnection mysql = new MySqlConnection(mainconn);
             string query = "select * from test";
@@ -32,9 +32,10 @@ namespace ISP_Biblioteka.Controllers
                     ImagePath = "~/Image/User/" + dr["image"].ToString()
                 });
             }
-            mysql.Close();
+            mysql.Close();*/
 
-            return View(list1);
+           // return View(list1);
+            return View();
         }
     }
 }
