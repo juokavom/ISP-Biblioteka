@@ -19,9 +19,11 @@
         </tr>
         @foreach (ISP_Biblioteka.Models.User details in Model)
         {
+            System.Diagnostics.Debug.WriteLine(@details.ImagePath);
             <tr>
                 <td>@details.Name</td>
                 <td>@details.Id</td>
+                <td><img src="@Url.Content(@details.ImagePath)" width="50" height="50"></td>
             </tr>
         }
     </table>

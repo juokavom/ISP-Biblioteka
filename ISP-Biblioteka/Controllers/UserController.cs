@@ -28,7 +28,8 @@ namespace ISP_Biblioteka.Controllers
                 list1.Add(new Models.User 
                 {
                     Name = dr["name"].ToString(),
-                    Id = Int32.Parse(dr["id"].ToString())
+                    Id = Int32.Parse(dr["id"].ToString()),
+                    ImagePath = "~/Image/User/" + dr["image"].ToString()
                 });
             }
             mysql.Close();
