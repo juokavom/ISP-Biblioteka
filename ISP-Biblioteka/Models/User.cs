@@ -7,6 +7,7 @@ using ISP_Biblioteka.Models;
 using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using System.Reflection;
 
 namespace ISP_Biblioteka.Models
 {
@@ -28,7 +29,7 @@ namespace ISP_Biblioteka.Models
         // 1 - patvirtintas vartotojas
         // 2 - uzblokuotas vartotojas
         public int Validation { get; set; }
-        // 1 - Skaitytonas
+        // 1 - Skaitytojas
         // 2 - Bibliotekininke
         // 3 - Moderatorius
         public int Type { get; set; }
@@ -78,6 +79,24 @@ namespace ISP_Biblioteka.Models
             if (count != 0) exist = true;
            
             return exist;
+        }
+
+        private PropertyInfo[] _PropertyInfos = null;
+
+        public override string ToString()
+        {
+            if (_PropertyInfos == null)
+                _PropertyInfos = this.GetType().GetProperties();
+
+            var sb = new System.Text.StringBuilder();
+
+            foreach (var info in _PropertyInfos)
+            {
+                var value = info.GetValue(this, null) ?? "(null)";
+                sb.AppendLine(info.Name + ": " + value.ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 
 namespace ISP_Biblioteka.Controllers
 {
@@ -14,13 +15,15 @@ namespace ISP_Biblioteka.Controllers
         {
             return View();
         }
-        public JsonResult SaveData(User model)
+        public JsonResult AddUser(User user)
         {
-            model.Validation = 0;
-            
+            user.Validation = 0;
+            user.Type = 1;
+            string gender = "female";
+            if (user.Gender == 1) gender = "male";
+            user.Image = string.Format("~/Image/User/{0}.png", gender);
 
-
-            //BuildEmailTemplate(model.ID);
+            BuildEmailTemplate(model.ID);
             return Json("Registration Successfull", JsonRequestBehavior.AllowGet);
         }
         

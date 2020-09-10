@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <form id="Registration">
+                    <form id="Registration" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -127,14 +127,14 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                                <input class="form-control" type="file" id="Image" name="Image">
+                                <input class="form-control" type="file" id="file" name="file">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-adjust"></i></span>
-                                <input class="radio" type="radio" name="gender" value="male"><label>Vyras</label>
-                                <input class="radio" type="radio" name="gender" value="female"><label>Moteris</label>
+                                <input type="radio" name="Gender" id="gen_male" value="1"><label>Vyras</label>
+                                <input type="radio" name="Gender" id="gen_female" value="0"><label>Moteris</label>
                                
                             </div>
                         </div>
@@ -158,6 +158,14 @@
             Hide();
         }
 
+        function atLeastOneRadio() {
+            if (document.getElementById('gen_male').checked ||
+                document.getElementById('gen_female').checked) {
+                return true;
+            }
+            return false;
+        }
+
         function Hide() {
             $("#message1").hide();
             $("#message2").hide();
@@ -174,11 +182,11 @@
             var surname = $("#Surname").val();
             var phone = $("#Phone").val();
             var address = $("#Address").val();
-            var gender = $("#gender").val();
+            var gender = $("#Gender").val();
 
             //Tikrinami ar visi laukai užpildyti (be nuotraukos)
             if (user == "" || password == "" || password2 == "" || email == "" ||
-                name == "" || surname == "" || phone == "" || address == "" || gender == "") {
+                name == "" || surname == "" || phone == "" || address == "" || !atLeastOneRadio()) {
                 Hide();
                 $("#message2").show();
                 return false;
@@ -207,12 +215,12 @@
                 }
             });
 
-            //Perduodami duomenys backui i registracijos kontrolerio metoda
+            //Perduodami duomenys backui itraukti vartotoja i db
             var data = $("#Registration").serialize();
             $.ajax({
                 type: "post",
                 data: data,
-                url: "/Register/SaveData",
+                url: "/Register/AddUser",
                 success: function (result) {
                     Hide();
                     $("#message1").show();
