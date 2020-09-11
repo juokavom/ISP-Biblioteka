@@ -8,6 +8,7 @@ using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Reflection;
+using Microsoft.Ajax.Utilities;
 
 namespace ISP_Biblioteka.Models
 {
@@ -34,7 +35,7 @@ namespace ISP_Biblioteka.Models
         // 3 - Moderatorius
         public int Type { get; set; }
 
-        /*public Exception insert()
+        public Exception insertToDb()
         {
             try
             {
@@ -44,9 +45,17 @@ namespace ISP_Biblioteka.Models
                        "VALUES(?username,?password,?name,?surname,?email,?address,?phone,?image,?gender,?validation,?type);";
 
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-                mySqlCommand.Parameters.Add("?rating", MySqlDbType.Float).Value = client.rating;
-                mySqlCommand.Parameters.Add("?fk_user", MySqlDbType.VarChar).Value = client.fk_user;
-                mySqlCommand.Parameters.Add("?rating_count", MySqlDbType.Int16).Value = client.rating_count;
+                mySqlCommand.Parameters.Add("?username", MySqlDbType.VarChar).Value = Username;
+                mySqlCommand.Parameters.Add("?password", MySqlDbType.VarChar).Value = Password;
+                mySqlCommand.Parameters.Add("?name", MySqlDbType.VarChar).Value = Name;
+                mySqlCommand.Parameters.Add("?surname", MySqlDbType.VarChar).Value = Surname;
+                mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = Email;
+                mySqlCommand.Parameters.Add("?address", MySqlDbType.VarChar).Value = Address;
+                mySqlCommand.Parameters.Add("?phone", MySqlDbType.Int32).Value = Phone;
+                mySqlCommand.Parameters.Add("?image", MySqlDbType.VarChar).Value = Image;
+                mySqlCommand.Parameters.Add("?gender", MySqlDbType.Int32).Value = Gender;
+                mySqlCommand.Parameters.Add("?validation", MySqlDbType.Int32).Value = Validation;
+                mySqlCommand.Parameters.Add("?type", MySqlDbType.Int32).Value = Type;
                 mySqlConnection.Open();
                 mySqlCommand.ExecuteNonQuery();
                 mySqlConnection.Close();
@@ -58,7 +67,75 @@ namespace ISP_Biblioteka.Models
                 return e;
             }
 
-        }*/
+        }
+
+        public Exception updateValues()
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"SELECT * FROM `user` WHERE `email` = ?email";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = Email;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                if (dt.Rows.Count == 1)
+                {
+                    Username = Convert.ToString(dt.Rows[0]["username"]);
+                    Password = Convert.ToString(dt.Rows[0]["password"]);
+                    Name = Convert.ToString(dt.Rows[0]["name"]);
+                    Surname = Convert.ToString(dt.Rows[0]["surname"]);
+                    Phone = Convert.ToInt16(dt.Rows[0]["phone"] == DBNull.Value ? 0 : dt.Rows[0]["phone"]);
+                    Address = Convert.ToString(dt.Rows[0]["address"]);
+                    Image = Convert.ToString(dt.Rows[0]["image"]);
+                    Gender = Convert.ToInt16(dt.Rows[0]["gender"] == DBNull.Value ? 0 : dt.Rows[0]["gender"]);
+                    Validation = Convert.ToInt16(dt.Rows[0]["validation"] == DBNull.Value ? 0 : dt.Rows[0]["validation"]);
+                    Type = Convert.ToInt16(dt.Rows[0]["type"] == DBNull.Value ? 0 : dt.Rows[0]["type"]);
+                    return null;
+                }
+                else if (dt.Rows.Count > 1) 
+                {
+                    throw new Exception("DB keli useriai su tokiu emailu");
+                }
+                throw new Exception("DB nera userio su tokiu emailu");
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+        }
+
+        public static Exception validate(string email, int number)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"UPDATE `user` SET `validation`=?validation WHERE `email`=?email;";
+
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = email;
+                mySqlCommand.Parameters.Add("?validation", MySqlDbType.Int32).Value = number;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+
+        }
 
         public bool chechUser()
         {
@@ -82,7 +159,6 @@ namespace ISP_Biblioteka.Models
         }
 
         private PropertyInfo[] _PropertyInfos = null;
-
         public override string ToString()
         {
             if (_PropertyInfos == null)

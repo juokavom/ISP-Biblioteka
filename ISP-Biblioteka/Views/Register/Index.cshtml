@@ -73,9 +73,14 @@
                             <span class="glyphicon glyphicon-remove"></span><strong>Klaida! Vartotojas su šiuo elektroniniu paštu jau egzistuoja.</strong>
                         </div>
                     </div>
+                    <div id="message5">
+                        <div class="alert alert-danger">
+                            <span class="glyphicon glyphicon-remove"></span><strong>Klaida! Įveskite tinkamą elektroninį paštą.</strong>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-body">
-                    <form id="Registration" method="post" enctype="multipart/form-data">
+                    <form id="Registration">
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -126,16 +131,10 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                                <input class="form-control" type="file" id="file" name="file">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-adjust"></i></span>
                                 <input type="radio" name="Gender" id="gen_male" value="1"><label>Vyras</label>
                                 <input type="radio" name="Gender" id="gen_female" value="0"><label>Moteris</label>
-                               
+
                             </div>
                         </div>
                     </form>
@@ -166,12 +165,34 @@
             return false;
         }
 
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@@"]+(\.[^<>()\[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
         function Hide() {
             $("#message1").hide();
             $("#message2").hide();
             $("#message3").hide();
             $("#message4").hide();
+            $("#message5").hide();
         }
+
+        function addUser() {
+            //Perduodami duomenys backui itraukti vartotoja i db
+            var data = $("#Registration").serialize();
+            $.ajax({
+                type: "post",
+                data: data,
+                url: "/Register/AddUser",
+                success: function (result) {
+                    Hide();
+                    $("#message1").show();
+                    $("#Registration")[0].reset();
+                }
+            });
+        }
+
 
         function SaveForm() {
             var user = $("#User").val();
@@ -199,6 +220,13 @@
                 return false;
             }
 
+            //Tikrinamas elektroninio pašto vientisumas
+            if (!validateEmail(email)) {
+                Hide();
+                $("#message5").show();
+                return false;
+            }
+
             //Tikrinama, ar nėra tokio vartotojo emailo
             var data = $("#Registration").serialize();
             $.ajax({
@@ -212,21 +240,13 @@
                         $("#message4").show();
                         return false;
                     }
+                    else {
+                        console.log("Vykdome itraukima");
+                        addUser();
+                    }
                 }
             });
 
-            //Perduodami duomenys backui itraukti vartotoja i db
-            var data = $("#Registration").serialize();
-            $.ajax({
-                type: "post",
-                data: data,
-                url: "/Register/AddUser",
-                success: function (result) {
-                    Hide();
-                    $("#message1").show();
-                    $("#Registration")[0].reset();
-                }
-            });
         }
 
         //Login System
