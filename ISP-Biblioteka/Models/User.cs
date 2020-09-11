@@ -14,11 +14,10 @@ namespace ISP_Biblioteka.Models
 {
     public class User
     {
-        //Unikalus lenteleje
-        public string Username { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+        //Unikalus lenteleje
         public string Email { get; set; }
         public string Address { get; set; }
         public int Phone { get; set; }
@@ -41,11 +40,10 @@ namespace ISP_Biblioteka.Models
             {
                 string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = @"INSERT INTO `user`(`username`, `password`, `name`, `surname`, `email`, `address` , `phone`, `image`, `gender`, `validation`, `type`) " +
-                       "VALUES(?username,?password,?name,?surname,?email,?address,?phone,?image,?gender,?validation,?type);";
+                string sqlquery = @"INSERT INTO `user`(`password`, `name`, `surname`, `email`, `address` , `phone`, `image`, `gender`, `validation`, `type`) " +
+                       "VALUES(?password,?name,?surname,?email,?address,?phone,?image,?gender,?validation,?type);";
 
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-                mySqlCommand.Parameters.Add("?username", MySqlDbType.VarChar).Value = Username;
                 mySqlCommand.Parameters.Add("?password", MySqlDbType.VarChar).Value = Password;
                 mySqlCommand.Parameters.Add("?name", MySqlDbType.VarChar).Value = Name;
                 mySqlCommand.Parameters.Add("?surname", MySqlDbType.VarChar).Value = Surname;
@@ -87,7 +85,6 @@ namespace ISP_Biblioteka.Models
 
                 if (dt.Rows.Count == 1)
                 {
-                    Username = Convert.ToString(dt.Rows[0]["username"]);
                     Password = Convert.ToString(dt.Rows[0]["password"]);
                     Name = Convert.ToString(dt.Rows[0]["name"]);
                     Surname = Convert.ToString(dt.Rows[0]["surname"]);
@@ -111,6 +108,31 @@ namespace ISP_Biblioteka.Models
                 Console.WriteLine(e);
                 return e;
             }
+        }
+
+        public static User loginCheck(User user) {
+            User ret = null;
+
+            string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT COUNT(`email`) as `count` FROM `user` WHERE `email` = ?email AND `password` = ?password AND `validation` = 1";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = user.Email;
+            mySqlCommand.Parameters.Add("?password", MySqlDbType.VarChar).Value = user.Password;
+            mySqlConnection.Open();
+            mySqlCommand.ExecuteNonQuery();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            int count = Int32.Parse(Convert.ToString(dt.Rows[0]["count"]));
+            if (count == 1) {
+                user.updateValues();
+                ret = user;
+            }
+
+            return ret;
         }
 
         public static Exception validate(string email, int number)
@@ -137,7 +159,7 @@ namespace ISP_Biblioteka.Models
 
         }
 
-        public bool chechUser()
+        public bool chechUniqueEmail()
         {
             bool exist = false;
             string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;

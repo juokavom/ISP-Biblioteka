@@ -18,8 +18,12 @@
     </div>
     <div class="alert alert-success" id="after" style="display:none">
         <strong><span class="glyphicon glyphicon-ok"></span> Jūsų paskyra suaktyvinta!</strong>
+        <button class="btn btn-success" back type="submit" onclick="reroute()">Prisijungti</button>
     </div>
     <script>
+        function reroute() {
+            window.location.replace("Index/");
+        }
         function Verified() {
             $.ajax({
                 type: "post",

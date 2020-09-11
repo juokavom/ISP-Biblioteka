@@ -18,25 +18,25 @@
     <div class="container" style="margin-top:10%">
         <div class="row">
             <div class="col-md-4 col-md-offset-4 alert alert-info">
-                <h3 class="text-center">Login</h3>
+                <h3 class="text-center">Prisijungimas</h3>
                 <form id="loginForm">
-                    <div id="msg"><ul style="color:red;"> Invalid Username Or Password</ul></div>
+                    <div id="msg"><ul style="color:red;">Neteisingas vartotojo vardas ar slaptažodis</ul></div>
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                            <input class="form-control" type="email" name="Email" id="logEmail" placeholder="Email" />
+                            <input class="form-control" type="email" name="Email" id="logEmail" placeholder="Elektroninis paštas" />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input class="form-control" type="password" name="Password" id="logPssword" placeholder="Password" />
+                            <input class="form-control" type="password" name="Password" id="logPssword" placeholder="Slaptažodis" />
                         </div>
                     </div>
                 </form>
                 <div class="form-group">
-                    <button class="btn btn-info form-control" type="submit" onclick="Login()"><i class="glyphicon glyphicon-log-in"></i> Login</button>
+                    <button class="btn btn-info form-control" type="submit" onclick="Login()"><i class="glyphicon glyphicon-log-in"></i>  Prisijungti</button>
                 </div>
                 <div class="form-group">
                     <a style="float:left">Pamiršau slaptažodį!</a><a style="float:right;cursor:pointer" onclick="SignUp()">Registracija</a>
@@ -81,12 +81,6 @@
                 </div>
                 <div class="modal-body">
                     <form id="Registration">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input class="form-control" type="text" name="Username" id="User" placeholder="Vartotojo vardas" />
-                            </div>
-                        </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
@@ -195,7 +189,6 @@
 
 
         function SaveForm() {
-            var user = $("#User").val();
             var password = $("#Password").val();
             var password2 = $("#Password2").val();
             var email = $("#Email").val();
@@ -206,7 +199,7 @@
             var gender = $("#Gender").val();
 
             //Tikrinami ar visi laukai užpildyti (be nuotraukos)
-            if (user == "" || password == "" || password2 == "" || email == "" ||
+            if (password == "" || password2 == "" || email == "" ||
                 name == "" || surname == "" || phone == "" || address == "" || !atLeastOneRadio()) {
                 Hide();
                 $("#message2").show();
@@ -234,14 +227,12 @@
                 data: data,
                 url: "/Register/CheckUser",
                 success: function (result) {
-                    console.log(result);
                     if (result == "Fail") {
                         Hide();
                         $("#message4").show();
                         return false;
                     }
                     else {
-                        console.log("Vykdome itraukima");
                         addUser();
                     }
                 }

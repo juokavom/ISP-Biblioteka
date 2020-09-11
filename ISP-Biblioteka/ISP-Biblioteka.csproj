@@ -216,6 +216,7 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Register\Index.cshtml" />
     <Content Include="Views\Register\Confirm.cshtml" />
+    <Content Include="Views\Register\AfterLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

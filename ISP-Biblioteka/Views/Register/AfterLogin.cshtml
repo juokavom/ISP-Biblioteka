@@ -1,14 +1,12 @@
 ﻿
 @{
-    ViewBag.Title = "AfterLogin";
+    ViewBag.Title = "Sveiki!";
 }
 
-<h2>AfterLogin</h2>
 
-@if (Session["UserID"] != null)
+@if (Session["email"] != null)
 {
-    <div >
-        Welcome : <a href="#"> @Session["UserName"] </a><br />
-        <a href="/Register/Logout"> Logout</a>
+    <div>
+        Sveiki, @Session["name"]<br /><a href="/Register/Logout"> Atsijungti</a>
     </div>
 }

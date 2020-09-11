@@ -34,6 +34,17 @@ namespace ISP_Biblioteka.Controllers
             ViewBag.email = email;
             return View();
         }
+        public JsonResult CheckValidUser(User user)
+        {
+            string result = "Fail";
+            if (Models.User.loginCheck(user) != null) {
+                Session["email"] = user.Email;
+                Session["name"] = user.Name;
+                Session["type"] = user.Type;
+                result = "Success";
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         public void BuildEmailTemplate(User user)
         {
@@ -98,10 +109,28 @@ namespace ISP_Biblioteka.Controllers
         public JsonResult CheckUser(User user)
         {
             string result = "Fail";
-            if (!user.chechUser()) {
+            if (!user.chechUniqueEmail()) {
                 result = "Success";
             }
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult AfterLogin()
+        {
+            if (Session["email"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            Session.Abandon();
+            return RedirectToAction("Index");
         }
     }
 }
