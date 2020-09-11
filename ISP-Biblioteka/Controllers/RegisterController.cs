@@ -26,13 +26,20 @@ namespace ISP_Biblioteka.Controllers
             user.Image = string.Format("~/Image/User/{0}.png", gender);
             user.insertToDb();
             BuildEmailTemplate(user);
-            return Json("Registration Successfull", JsonRequestBehavior.AllowGet);
+            return Json("Registracija sėkminga!", JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult Confirm(string email) 
+        {
+            ViewBag.email = email;
+            return View();
+        }
+
         public void BuildEmailTemplate(User user)
         {
             string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "Text" + ".cshtml");
             var url = "https://localhost:44303/" + "Register/Confirm?email=" + user.Email;
-            body = body.Replace("@ViewBag.ConfirmationLink", url);
+            body = body.Replace("ViewBag.ConfirmationLink", url);
             body = body.ToString();
             BuildEmailTemplate("Jūsų paskyra sėkmingai sukurta!", body, user.Email);
         }
