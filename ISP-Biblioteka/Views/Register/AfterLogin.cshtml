@@ -3,10 +3,14 @@
     ViewBag.Title = "Sveiki!";
 }
 
-
 @if (Session["email"] != null)
 {
-    <div>
-        Sveiki, @Session["name"]<br /><a href="/Register/Logout"> Atsijungti</a>
+    <br><br>
+    <div class="blockquote">
+        Informacija apie paskyrą: <br>
+        Vardas:  @Session["name"]<br />
+        El.Paštas:  @Session["email"]<br />
+        Paskyros tipas:  @Session["typeName"]<br />
+
     </div>
 }

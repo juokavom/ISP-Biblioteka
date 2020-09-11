@@ -16,18 +16,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
                 @Html.ActionLink("Biblioteka 389", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Knygos", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Ataskaitos", "About", "Home")</li>
+                    <li>@Html.ActionLink("Paskyra", "Contact", "Home")</li>
                 </ul>
+                <p class="name"><a class="btn btn-primary" href="/Register/Logout"> Atsijungti</a></p><p class="name sveiki"> Sveiki, @Session["name"]!</p>
             </div>
-        </div>
-        <div id="name">
-            Sveiki, @Session["name"]<br /><a href="/Register/Logout"> Atsijungti</a>
         </div>
     </div>
     <div class="container body-content">
@@ -42,4 +42,17 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
 </html>
+
+<style>
+    .name {
+        padding: 10px;
+        padding-bottom: 0px;
+        color: white;
+        float: right;
+    }
+    .sveiki {
+        padding-top: 18px;
+    }
+</style>

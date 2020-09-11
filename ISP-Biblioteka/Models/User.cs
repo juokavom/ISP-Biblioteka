@@ -96,7 +96,7 @@ namespace ISP_Biblioteka.Models
                     Type = Convert.ToInt16(dt.Rows[0]["type"] == DBNull.Value ? 0 : dt.Rows[0]["type"]);
                     return null;
                 }
-                else if (dt.Rows.Count > 1) 
+                else if (dt.Rows.Count > 1)
                 {
                     throw new Exception("DB keli useriai su tokiu emailu");
                 }
@@ -110,7 +110,8 @@ namespace ISP_Biblioteka.Models
             }
         }
 
-        public static User loginCheck(User user) {
+        public static User loginCheck(User user)
+        {
             User ret = null;
 
             string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
@@ -127,7 +128,8 @@ namespace ISP_Biblioteka.Models
             mySqlConnection.Close();
 
             int count = Int32.Parse(Convert.ToString(dt.Rows[0]["count"]));
-            if (count == 1) {
+            if (count == 1)
+            {
                 user.updateValues();
                 ret = user;
             }
@@ -171,12 +173,12 @@ namespace ISP_Biblioteka.Models
             mySqlCommand.ExecuteNonQuery();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
             DataTable dt = new DataTable();
-            mda.Fill(dt); 
+            mda.Fill(dt);
             mySqlConnection.Close();
 
-            int count = Int32.Parse( Convert.ToString(dt.Rows[0]["count"]));
+            int count = Int32.Parse(Convert.ToString(dt.Rows[0]["count"]));
             if (count != 0) exist = true;
-           
+
             return exist;
         }
 
@@ -195,6 +197,16 @@ namespace ISP_Biblioteka.Models
             }
 
             return sb.ToString();
+        }
+        public string getUserTypeName()
+        {
+            string type;
+            if (Type == 1) type = "Skaitytojas";
+            else
+            {
+                type = Type == 2 ? "Bibliotekininkas" : "Moderatorius";
+            }
+            return type;
         }
     }
 }

@@ -41,6 +41,7 @@ namespace ISP_Biblioteka.Controllers
                 Session["email"] = user.Email;
                 Session["name"] = user.Name;
                 Session["type"] = user.Type;
+                Session["typeName"] = user.getUserTypeName();
                 result = "Success";
             }
             return Json(result, JsonRequestBehavior.AllowGet);
