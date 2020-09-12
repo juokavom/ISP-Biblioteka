@@ -20,7 +20,7 @@ namespace ISP_Biblioteka.Models
         //Unikalus lenteleje
         public string Email { get; set; }
         public string Address { get; set; }
-        public int Phone { get; set; }
+        public string Phone { get; set; }
         //Nuotraukos kelias
         public string Image { get; set; }
         // 1 - Vyras, 2 - Moteris, daugiau nera
@@ -49,7 +49,7 @@ namespace ISP_Biblioteka.Models
                 mySqlCommand.Parameters.Add("?surname", MySqlDbType.VarChar).Value = Surname;
                 mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = Email;
                 mySqlCommand.Parameters.Add("?address", MySqlDbType.VarChar).Value = Address;
-                mySqlCommand.Parameters.Add("?phone", MySqlDbType.Int32).Value = Phone;
+                mySqlCommand.Parameters.Add("?phone", MySqlDbType.VarChar).Value = Phone;
                 mySqlCommand.Parameters.Add("?image", MySqlDbType.VarChar).Value = Image;
                 mySqlCommand.Parameters.Add("?gender", MySqlDbType.Int32).Value = Gender;
                 mySqlCommand.Parameters.Add("?validation", MySqlDbType.Int32).Value = Validation;
@@ -88,7 +88,7 @@ namespace ISP_Biblioteka.Models
                     Password = Convert.ToString(dt.Rows[0]["password"]);
                     Name = Convert.ToString(dt.Rows[0]["name"]);
                     Surname = Convert.ToString(dt.Rows[0]["surname"]);
-                    Phone = Convert.ToInt16(dt.Rows[0]["phone"] == DBNull.Value ? 0 : dt.Rows[0]["phone"]);
+                    Phone = Convert.ToString(dt.Rows[0]["phone"]);
                     Address = Convert.ToString(dt.Rows[0]["address"]);
                     Image = Convert.ToString(dt.Rows[0]["image"]);
                     Gender = Convert.ToInt16(dt.Rows[0]["gender"] == DBNull.Value ? 0 : dt.Rows[0]["gender"]);
