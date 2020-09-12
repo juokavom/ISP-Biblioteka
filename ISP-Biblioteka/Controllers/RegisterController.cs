@@ -68,11 +68,7 @@ namespace ISP_Biblioteka.Controllers
         }
         public JsonResult ForgotConfirm(string email, string password)
         {
-            //Keisti slaptazodi i db
-
-            System.Diagnostics.Debug.WriteLine("Keiciam slaptazodi: email={0}, psw={1}", 
-                email, password);
-
+            Models.User.changePassword(email, password);
             var msg = "Slaptažodis sėkmingai pakeistas!";
             return Json(msg, JsonRequestBehavior.AllowGet);
         }

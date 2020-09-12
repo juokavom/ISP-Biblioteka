@@ -161,6 +161,29 @@ namespace ISP_Biblioteka.Models
 
         }
 
+        public static Exception changePassword(string email, string password)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"UPDATE `user` SET `password`=?password WHERE `email`=?email;";
+
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = email;
+                mySqlCommand.Parameters.Add("?password", MySqlDbType.VarChar).Value = password;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+        }
+
         public static bool chechUniqueEmail(string email)
         {
             bool exist = false;
