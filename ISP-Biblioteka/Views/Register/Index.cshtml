@@ -229,6 +229,34 @@
             });
         }
 
+        function PasswordReminder() {
+            var email = $("#EmailReminder").val();
+
+            //Tikrinamas elektroninio pašto vientisumas
+            if (!validateEmail(email)) {
+                $("#messagePsw1").hide();
+                $("#messagePsw2").show();
+                return false;
+            }
+
+            //Tikrinama, ar yra toks vartotojas su tokiu emailu
+            $.ajax({
+                type: "post",
+                data: { 'email': email },
+                url: "/Register/CheckEmail",
+                success: function (result) {
+                    if (result == "Fail") {
+                        $("#messagePsw1").hide();
+                        $("#messagePsw2").show();
+                        return false;
+                    }
+                    else {
+                        $("#messagePsw2").hide();
+                        $("#messagePsw1").show();
+                    }
+                }
+            });
+        }
 
         function SaveForm() {
             var password = $("#Password").val();

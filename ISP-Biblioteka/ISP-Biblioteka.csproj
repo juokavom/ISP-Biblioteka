@@ -190,7 +190,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="EmailTemplate\Text.cshtml" />
+    <Content Include="EmailTemplate\ForgotConfirm.cshtml" />
+    <Content Include="EmailTemplate\RegistrationConfirm.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -217,6 +218,7 @@
     <Content Include="Views\Register\Index.cshtml" />
     <Content Include="Views\Register\Confirm.cshtml" />
     <Content Include="Views\Register\AfterLogin.cshtml" />
+    <Content Include="Views\Register\Forgot.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

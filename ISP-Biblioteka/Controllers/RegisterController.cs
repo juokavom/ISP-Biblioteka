@@ -29,7 +29,12 @@ namespace ISP_Biblioteka.Controllers
             return Json("Registracija sėkminga!", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Confirm(string email) 
+        public ActionResult Confirm(string email)
+        {
+            ViewBag.email = email;
+            return View();
+        }
+        public ActionResult Forgot(string email)
         {
             ViewBag.email = email;
             return View();
@@ -49,7 +54,7 @@ namespace ISP_Biblioteka.Controllers
 
         public void BuildEmailTemplate(User user)
         {
-            string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "Text" + ".cshtml");
+            string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "RegistrationConfirm" + ".cshtml");
             var url = "https://localhost:44303/" + "Register/Confirm?email=" + user.Email;
             body = body.Replace("ViewBag.ConfirmationLink", url);
             body = body.ToString();
@@ -61,6 +66,34 @@ namespace ISP_Biblioteka.Controllers
             var msg = "Jūsų paskyra patvirtinta!";
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult ForgotConfirm(string email, string password)
+        {
+            //Keisti slaptazodi i db
+
+            System.Diagnostics.Debug.WriteLine("Keiciam slaptazodi: email={0}, psw={1}", 
+                email, password);
+
+            var msg = "Slaptažodis sėkmingai pakeistas!";
+            return Json(msg, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult CheckEmail(string email)
+        {
+            string result = "Fail";
+            if (Models.User.chechUniqueEmail(email)) {
+                result = "Success";
+                BuildEmailTemplate(email);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public void BuildEmailTemplate(string email)
+        {
+            string body = System.IO.File.ReadAllText(HostingEnvironment.MapPath("~/EmailTemplate/") + "ForgotConfirm" + ".cshtml");
+            var url = "https://localhost:44303/" + "Register/Forgot?email=" + email;
+            body = body.Replace("ViewBag.ConfirmationLink", url);
+            body = body.ToString();
+            BuildEmailTemplate("Atkurkite slaptažodį!", body, email);
+        }
+
         public static void BuildEmailTemplate(string subjectText, string bodyText, string sendTo)
         {
             string from, to, bcc, cc, subject, body;
@@ -110,7 +143,7 @@ namespace ISP_Biblioteka.Controllers
         public JsonResult CheckUser(User user)
         {
             string result = "Fail";
-            if (!user.chechUniqueEmail()) {
+            if (!Models.User.chechUniqueEmail(user.Email)) {
                 result = "Success";
             }
             return Json(result, JsonRequestBehavior.AllowGet);

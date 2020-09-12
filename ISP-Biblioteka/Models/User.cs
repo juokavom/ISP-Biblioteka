@@ -161,14 +161,14 @@ namespace ISP_Biblioteka.Models
 
         }
 
-        public bool chechUniqueEmail()
+        public static bool chechUniqueEmail(string email)
         {
             bool exist = false;
             string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
             string sqlquery = @"SELECT COUNT(`email`) as `count` FROM `user` WHERE `email` = ?email";
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = Email;
+            mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = email;
             mySqlConnection.Open();
             mySqlCommand.ExecuteNonQuery();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);

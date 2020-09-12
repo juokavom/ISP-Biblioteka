@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Slaptažodžio atkūrimas";
+    Layout = null;
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<!DOCTYPE html>
+
+<html>
+<body>
+    <br />
+    <br />
+    <div id="message1" style="display:none">
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove"></span><strong>Klaida! Slaptažodžiai nesutampa.</strong>
+        </div>
+    </div>
+    <div class="alert alert-success" id="after" style="display:none">
+        <strong><span class="glyphicon glyphicon-ok"></span> Slaptažodis atkurtas!</strong>
+        <button class="btn btn-success" back type="submit" onclick="reroute()">Prisijungti</button>
+    </div>
+    <div class="form-group" id="previous">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input class="form-control" type="password" name="Password" id="Password" placeholder="Įveskite naują slaptažodį" />
+        </div>
+    </div>
+    <div class="form-group" id="previous2">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input class="form-control" type="password" name="Password2" id="Password2" placeholder="Pakartokite slaptažodį" />
+        </div>
+    </div>
+    <div class="form-group" id="previous3">
+        <button class="btn btn-info form-control" type="submit" onclick="Reminder()"><i class="glyphicon glyphicon-registration-mark"></i>Patvirtinti</button>
+    </div>
+    <script>
+        function Reminder() {
+            //Tikrinami ar slaptažodžiai sutampa
+            if ($("#Password").val() != $("#Password2").val()) {
+                $("#message1").show();
+                return false;
+            } else {
+                $("#message1").hide();
+                Verified();
+            }
+        }
+
+        function reroute() {
+            window.location.replace("Index/");
+        }
+        function Verified() {
+            $.ajax({
+                type: "post",
+                url: "/Register/ForgotConfirm",
+                data: { 'email': '@ViewBag.email', 'password': $("#Password").val() },
+                success: function (msg) {
+                    $("#previous").hide();
+                    $("#previous2").hide();
+                    $("#previous3").hide();
+                    $("#after").show();
+                    alert(msg);
+                }
+            })
+        }
+    </script>
+</body>
+</html>
