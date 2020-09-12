@@ -39,7 +39,7 @@
                     <button class="btn btn-info form-control" type="submit" onclick="Login()"><i class="glyphicon glyphicon-log-in"></i>  Prisijungti</button>
                 </div>
                 <div class="form-group">
-                    <a style="float:left">Pamiršau slaptažodį!</a><a style="float:right;cursor:pointer" onclick="SignUp()">Registracija</a>
+                    <a style="float:left" onclick="RemindPsw()">Pamiršau slaptažodį!</a><a style="float:right;cursor:pointer" onclick="SignUp()">Registracija</a>
                 </div>
             </div>
         </div>
@@ -139,6 +139,42 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="ShowModalPsw">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h4>Slaptažodžio atkūrimas</h4>
+                    <div id="messagePsw1">
+                        <div class="alert alert-success">
+                            <span class="glyphicon glyphicon-ok"></span><strong>
+                                Atkūrimas sėkmingas!<br />
+                                Nusiuntėme slaptažodžio atkūrimo nuorodą į jūsų elektroninio pašto dėžutę.<br />
+                            </strong>
+                        </div>
+                    </div>
+                    <div id="messagePsw2">
+                        <div class="alert alert-danger">
+                            <span class="glyphicon glyphicon-remove"></span><strong>Klaida! Vartotojas su šiuo elektroniniu paštu nerastas.</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form id="EmailReminderForm">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                <input class="form-control" type="email" name="EmailReminder" id="EmailReminder" placeholder="Elektroninis paštas" />
+                            </div>
+                        </div>
+                    </form>
+                    <div class="form-group">
+                        <button class="btn btn-info form-control" type="submit" onclick="PasswordReminder()"><i class="glyphicon glyphicon-registration-mark"></i>Pateikti</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <style>
         input[type=radio] {
@@ -149,6 +185,12 @@
         function SignUp() {
             $("#ShowModal").modal();
             Hide();
+        }
+
+        function RemindPsw() {
+            $("#ShowModalPsw").modal();
+            $("#messagePsw1").hide();
+            $("#messagePsw2").hide();            
         }
 
         function atLeastOneRadio() {
