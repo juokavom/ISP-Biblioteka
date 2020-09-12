@@ -6,11 +6,11 @@
 @if (Session["email"] != null)
 {
     <br><br>
-    <div class="blockquote">
-        Informacija apie paskyrą: <br>
-        Vardas:  @Session["name"]<br />
-        El.Paštas:  @Session["email"]<br />
-        Paskyros tipas:  @Session["typeName"]<br />
-
-    </div>
+        <div class="blockquote">
+            Informacija apie paskyrą: <br>
+            Vardas:  @Session["name"]<br />
+            El.Paštas:  @Session["email"]<br />
+            Paskyros tipas:  @Session["typeName"]<br />
+            Nuotrauka:  <img src="@Url.Content(@Session["image"].ToString())" width="50" height="50">
+        </div>
 }
