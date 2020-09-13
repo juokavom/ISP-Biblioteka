@@ -17,13 +17,21 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                @Html.ActionLink("Biblioteka 389", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Biblioteka 389", "Register", "AfterLogin", new { area = "" }, new { @class = "navbar-brand" })
                 
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Knygos", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Ataskaitos", "About", "Home")</li>
+                    @if (@Session["type"].Equals(2))
+                    {
+                        <li>@Html.ActionLink("Ataskaitos", "About", "Home")</li>
+                        <li>@Html.ActionLink("Knygų įtraukimas", "About", "Home")</li>
+                    }
+                    @if (@Session["type"].Equals(3))
+                    {
+                        <li>@Html.ActionLink("Vartotojai", "Contact", "Home")</li>
+                    }
                     <li>@Html.ActionLink("Paskyra", "Contact", "Home")</li>
                 </ul>
                 <p class="name"><a class="btn btn-primary" href="/Register/Logout"> Atsijungti</a></p><p class="name sveiki"> Sveiki, @Session["name"]!</p>
