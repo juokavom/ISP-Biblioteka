@@ -64,7 +64,7 @@ namespace ISP_Biblioteka.Controllers
         public JsonResult RegisterConfirm(string email)
         {
             Models.User.validate(email, 1);
-            var msg = "Jūsų paskyra patvirtinta!";
+            var msg = string.Format("Jūsų paskyra patvirtinta! ({0})", email);
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
         public JsonResult ForgotConfirm(string email, string password)
