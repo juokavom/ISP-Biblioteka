@@ -1,0 +1,57 @@
+﻿@model List<ISP_Biblioteka.Models.User>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Vartotojų valdymas</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th>Vardas</th>
+                <th>Pavardė</th>
+                <th>El.Paštas</th>
+                <th>Tipas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ISP_Biblioteka.Models.User user in Model)
+            {
+                string type = "Skaitytojas";
+                switch (user.Type)
+                {
+                    case 2:
+                        type = "Bibliotekininkas";
+                        break;
+                    case 3:
+                        type = "Administratorius";
+                        break;
+                }
+
+                <tr>
+                    <th scope="row">@user.ID</th>
+                    <th>@user.Name</th>
+                    <th>@user.Surname</th>
+                    <th>@user.Email</th>
+                    <th>@type</th>
+                    <th><a class="btn btn-primary" href="">Redaguoti</th>
+                    <th><a class="btn btn-danger" href="">Pašalinti</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+
+<style>
+    .table {
+        padding-top: 20px;
+    }
+</style>

@@ -36,6 +36,25 @@ namespace ISP_Biblioteka.Models
         // 3 - Moderatorius
         public int Type { get; set; }
 
+        public User()
+        {
+            
+        }
+
+        public User(DataRow row)
+        {
+            ID = Convert.ToInt16(row["id"]);
+            Email = Convert.ToString(row["email"]);
+            Password = Convert.ToString(row["password"]);
+            Name = Convert.ToString(row["name"]);
+            Surname = Convert.ToString(row["surname"]);
+            Phone = Convert.ToString(row["phone"]);
+            Address = Convert.ToString(row["address"]);
+            Image = Convert.ToString(row["image"]);
+            Gender = Convert.ToInt16(row["gender"] == DBNull.Value ? 0 : row["gender"]);
+            Validation = Convert.ToInt16(row["validation"] == DBNull.Value ? 0 : row["validation"]);
+            Type = Convert.ToInt16(row["type"] == DBNull.Value ? 0 : row["type"]);
+        }
         public Exception insertToDb()
         {
             try
