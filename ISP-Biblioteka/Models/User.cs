@@ -40,8 +40,8 @@ namespace ISP_Biblioteka.Models
             {
                 string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = @"INSERT INTO `user`(`password`, `name`, `surname`, `email`, `address` , `phone`, `image`, `gender`, `validation`, `type`) " +
-                       "VALUES(?password,?name,?surname,?email,?address,?phone,?image,?gender,?validation,?type);";
+                string sqlquery = @"INSERT INTO `user`(`id`, `password`, `name`, `surname`, `email`, `address` , `phone`, `image`, `gender`, `validation`, `type`) " +
+                       "VALUES(null,?password,?name,?surname,?email,?address,?phone,?image,?gender,?validation,?type);";
 
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?password", MySqlDbType.VarChar).Value = Password;
