@@ -41,8 +41,16 @@
                     <th>@user.Surname</th>
                     <th>@user.Email</th>
                     <th>@type</th>
-                    <th><a class="btn btn-primary" href="">Redaguoti</th>
-                    <th><a class="btn btn-danger" href="">Pašalinti</th>
+                    @if (Session["id"].Equals(user.ID))
+                    {
+                        <th>Esamas vartotojas</th>
+                        <th></th>
+                    }
+                    else
+                    {
+                        <th><a class="btn btn-primary" href="">Redaguoti</th>
+                        <th><a class="btn btn-danger" href="">Pašalinti</th>
+                    }
                 </tr>
             }
         </tbody>
