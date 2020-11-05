@@ -14,6 +14,8 @@ namespace ISP_Biblioteka.Models
 {
     public class User
     {
+
+        public int ID { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -85,6 +87,7 @@ namespace ISP_Biblioteka.Models
 
                 if (dt.Rows.Count == 1)
                 {
+                    ID = Convert.ToInt16(dt.Rows[0]["id"]);
                     Password = Convert.ToString(dt.Rows[0]["password"]);
                     Name = Convert.ToString(dt.Rows[0]["name"]);
                     Surname = Convert.ToString(dt.Rows[0]["surname"]);
@@ -182,6 +185,32 @@ namespace ISP_Biblioteka.Models
                 Console.WriteLine(e);
                 return e;
             }
+        }
+
+        public Exception logSession(string ip, string browser)
+        {
+            try
+            {
+                this.updateValues();
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"SET @@session.time_zone='+02:00';INSERT INTO `log`(`id`, `ip`, `browser_type`, `date`, `fk_user_id`) " +
+                    "VALUES (null,?ip,?browser,NOW(),?user)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?ip", MySqlDbType.VarChar).Value = ip;
+                mySqlCommand.Parameters.Add("?browser", MySqlDbType.VarChar).Value = browser;
+                mySqlCommand.Parameters.Add("?user", MySqlDbType.VarChar).Value = this.ID;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+
         }
 
         public static bool chechUniqueEmail(string email)
