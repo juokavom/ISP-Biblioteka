@@ -39,6 +39,7 @@ namespace ISP_Biblioteka.Controllers
             ViewBag.email = email;
             return View();
         }
+        [HttpPost]
         public JsonResult CheckValidUser(User user)
         {
             string result = "Fail";
@@ -48,6 +49,7 @@ namespace ISP_Biblioteka.Controllers
                 Session["type"] = user.Type;
                 Session["typeName"] = user.getUserTypeName();
                 Session["image"] = user.Image;
+                user.logSession(System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"], Request.UserAgent);
                 result = "Success";
             }
             return Json(result, JsonRequestBehavior.AllowGet);
