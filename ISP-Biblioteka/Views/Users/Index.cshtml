@@ -53,7 +53,6 @@
                     }
                     else
                     {
-                        //<th><a class="btn btn-primary" onclick="Edit()">Redaguoti</th>
                         <th>@Html.ActionLink("Redaguoti", "Edit", "User", new { email = user.Email }, new { @class = "btn btn-primary" })</th>
                         <th><a class="btn btn-danger" onclick="remove(@user.ID)">Pašalinti</th>
                     }
