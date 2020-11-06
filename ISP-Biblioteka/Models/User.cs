@@ -36,6 +36,25 @@ namespace ISP_Biblioteka.Models
         // 3 - Moderatorius
         public int Type { get; set; }
 
+        public User()
+        {
+            
+        }
+
+        public User(DataRow row)
+        {
+            ID = Convert.ToInt16(row["id"]);
+            Email = Convert.ToString(row["email"]);
+            Password = Convert.ToString(row["password"]);
+            Name = Convert.ToString(row["name"]);
+            Surname = Convert.ToString(row["surname"]);
+            Phone = Convert.ToString(row["phone"]);
+            Address = Convert.ToString(row["address"]);
+            Image = Convert.ToString(row["image"]);
+            Gender = Convert.ToInt16(row["gender"] == DBNull.Value ? 0 : row["gender"]);
+            Validation = Convert.ToInt16(row["validation"] == DBNull.Value ? 0 : row["validation"]);
+            Type = Convert.ToInt16(row["type"] == DBNull.Value ? 0 : row["type"]);
+        }
         public Exception insertToDb()
         {
             try
@@ -68,7 +87,37 @@ namespace ISP_Biblioteka.Models
             }
 
         }
+        public Exception updateToDb()
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"UPDATE `user` SET `name`=?name,`surname`=?surname, `address`=?address,`phone`=?phone," +
+                    "`image`=?image,`gender`=?gender,`validation`=?validation,`type`=?type WHERE `id`=?id";
 
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = ID;
+                mySqlCommand.Parameters.Add("?name", MySqlDbType.VarChar).Value = Name;
+                mySqlCommand.Parameters.Add("?surname", MySqlDbType.VarChar).Value = Surname;
+                mySqlCommand.Parameters.Add("?address", MySqlDbType.VarChar).Value = Address;
+                mySqlCommand.Parameters.Add("?phone", MySqlDbType.VarChar).Value = Phone;
+                mySqlCommand.Parameters.Add("?image", MySqlDbType.VarChar).Value = Image;
+                mySqlCommand.Parameters.Add("?gender", MySqlDbType.Int32).Value = Gender;
+                mySqlCommand.Parameters.Add("?validation", MySqlDbType.Int32).Value = Validation;
+                mySqlCommand.Parameters.Add("?type", MySqlDbType.Int32).Value = Type;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+
+        }
         public Exception updateValues()
         {
             try
@@ -164,6 +213,28 @@ namespace ISP_Biblioteka.Models
 
         }
 
+        public static Exception removeUser(int id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"DELETE FROM `user` WHERE `id` = ?id;";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?id", MySqlDbType.Int16).Value = id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+
+        }
+
         public static Exception changePassword(string email, string password)
         {
             try
@@ -185,8 +256,7 @@ namespace ISP_Biblioteka.Models
                 Console.WriteLine(e);
                 return e;
             }
-        }
-
+        }        
         public Exception logSession(string ip, string browser)
         {
             try

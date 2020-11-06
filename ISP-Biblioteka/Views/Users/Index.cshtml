@@ -1,0 +1,100 @@
+﻿@model List<ISP_Biblioteka.Models.User>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Vartotojų valdymas</title>
+</head>
+<body>
+    <br>
+    <br>
+    <div class="alert alert-danger" id="removeAl" style="display:none">
+        <strong style="padding-right: 15px"></span>Ar tikrai norite pašalinti vartotoją: ?</strong>
+        <button class="btn btn-warning" back type="submit" onclick="reroute()">Taip</button>
+    </div>
+    <h1 style="text-align:left">Sistemos vartotojai</h1>
+    <p class="name">@Html.ActionLink("Kurti naują vartotoją", "Create", "User", null, new { @class = "btn btn-primary" })</p>
+    <br>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th>Vardas</th>
+                <th>Pavardė</th>
+                <th>El.Paštas</th>
+                <th>Tipas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ISP_Biblioteka.Models.User user in Model)
+            {
+                string type = "Skaitytojas";
+                switch (user.Type)
+                {
+                    case 2:
+                        type = "Bibliotekininkas";
+                        break;
+                    case 3:
+                        type = "Administratorius";
+                        break;
+                }
+                <tr id=@user.ID>
+                    <th>@user.ID</th>
+                    <th>@user.Name</th>
+                    <th>@user.Surname</th>
+                    <th>@user.Email</th>
+                    <th>@type</th>
+                    @if (Session["id"].Equals(user.ID))
+                    {
+                        <th><i>Esamas vartotojas</i></th>
+                        <th></th>
+                    }
+                    else
+                    {
+                        <th>@Html.ActionLink("Redaguoti", "Edit", "User", new { email = user.Email }, new { @class = "btn btn-primary" })</th>
+                        <th><a class="btn btn-danger" onclick="remove(@user.ID)">Pašalinti</th>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="ShowModal">
+        <div class="modal-dialog">
+            <div class="alert alert-warning" id="previous">
+                <strong id="salVart"></strong>
+                <input type="submit" class="btn btn-danger" value="Taip" onclick="Removed()" />
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .table {
+            padding-top: 20px;
+        }
+    </style>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        var removeId;
+        function remove(id) {
+            removeId = id;
+            document.getElementById("salVart").innerHTML = `Ar tikrai norite pašalinti vartotoją ? ID = ${id}`;
+            $("#ShowModal").modal();
+        }
+        function Removed() {
+            $("#ShowModal").modal('hide');
+            $(`#${removeId}`).hide();
+            $.ajax({
+                type: "post",
+                url: "/User/RemoveUser",
+                data: { 'id': removeId }
+            });
+        }
+
+    </script>
+
+
+</body>
+</html>

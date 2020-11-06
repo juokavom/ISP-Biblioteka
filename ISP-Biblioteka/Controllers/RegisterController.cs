@@ -44,6 +44,7 @@ namespace ISP_Biblioteka.Controllers
         {
             string result = "Fail";
             if (Models.User.loginCheck(user) != null) {
+                Session["id"] = user.ID;
                 Session["email"] = user.Email;
                 Session["name"] = user.Name;
                 Session["type"] = user.Type;
