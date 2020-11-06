@@ -87,7 +87,11 @@
         function Removed() {
             $("#ShowModal").modal('hide');
             $(`#${removeId}`).hide();
-
+            $.ajax({
+                type: "post",
+                url: "/User/RemoveUser",
+                data: { 'id': removeId }
+            });
         }
 
     </script>
