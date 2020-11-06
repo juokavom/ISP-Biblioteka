@@ -10,8 +10,10 @@
 <body>
     <br>
     <br>
+    <h1 style="text-align:left">Sistemos vartotojai</h1>
+    <p class="name"><a class="btn btn-primary" href="">Kurti naują vartotoją</a></p>
     <br>
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">ID</th>
@@ -35,23 +37,24 @@
                         break;
                 }
 
-                <tr>
-                    <th scope="row">@user.ID</th>
-                    <th>@user.Name</th>
-                    <th>@user.Surname</th>
-                    <th>@user.Email</th>
-                    <th>@type</th>
-                    @if (Session["id"].Equals(user.ID))
-                    {
-                        <th>Esamas vartotojas</th>
-                        <th></th>
-                    }
-                    else
-                    {
-                        <th><a class="btn btn-primary" href="">Redaguoti</th>
-                        <th><a class="btn btn-danger" href="">Pašalinti</th>
-                    }
-                </tr>
+            <tr>
+                <th>@user.ID</th>
+                <th>@user.Name</th>
+                <th>@user.Surname</th>
+                <th>@user.Email</th>
+                <th>@type</th>
+                @if (Session["id"].Equals(user.ID))
+                {
+                    <th><i>Esamas vartotojas</i></th>
+                    <th></th>
+                }
+                else
+                {
+                    //<th><a class="btn btn-primary" onclick="Edit()">Redaguoti</th>
+                    <th >@Html.ActionLink("Redaguoti", "Edit", "User", new { email = user.Email }, new { @class = "btn btn-primary" })</th>
+                    <th><a class="btn btn-danger" href="">Pašalinti</th>
+                }
+            </tr>
             }
         </tbody>
     </table>

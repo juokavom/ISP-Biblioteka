@@ -16,23 +16,32 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
-                @Html.ActionLink("Biblioteka 389", "Register", "AfterLogin", new { area = "" }, new { @class = "navbar-brand" })
-                
+                @Html.ActionLink("Biblioteka 389", "AfterLogin", "Register", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Knygos", "Index", "Home")</li>
                     @if (@Session["type"].Equals(2))
                     {
-                        <li>@Html.ActionLink("Ataskaitos", "About", "Home")</li>
-                        <li>@Html.ActionLink("Knygų įtraukimas", "About", "Home")</li>
+                        //Bibliotekininko pasiekiami langai
                     }
                     @if (@Session["type"].Equals(3))
                     {
+                        //Administratoriaus pasiekiami langai
                         <li>@Html.ActionLink("Vartotojai", "Index", "Users")</li>
                     }
-                    <li>@Html.ActionLink("Paskyra", "Contact", "Home")</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                            Paskyra
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Redaguoti duomenis", "Edit", "User", new { email = Session["email"]}, null)</li>
+                            <li>@Html.ActionLink("Keisti slaptažodį", "", "", new { email = Session["email"]}, null)</li>
+                            @if (@Session["type"].Equals(1))
+                            {
+                                <li>@Html.ActionLink("Užsakymų istorija", "", "")</li>
+                            }
+                        </ul>
+                    </li>
                 </ul>
                 <p class="name"><a class="btn btn-primary" href="/Register/Logout"> Atsijungti</a></p><p class="name sveiki"> Sveiki, @Session["name"]!</p>
             </div>
@@ -60,7 +69,13 @@
         color: white;
         float: right;
     }
+
     .sveiki {
         padding-top: 18px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
     }
 </style>
