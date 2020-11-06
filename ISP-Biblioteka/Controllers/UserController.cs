@@ -29,6 +29,19 @@ namespace ISP_Biblioteka.Controllers
         {
             return View();
         }
+        public ActionResult Remove(string email)
+        {
+            Models.User user = new Models.User { Email = email };
+            user.updateValues();
+            return View(user);
+        }
+        public JsonResult RemoveAccount(string email)
+        {
+            Models.User user = new Models.User { Email = email };
+            user.updateValues();
+            Models.User.removeUser(user.ID);
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
         public JsonResult RemoveUser(int id)
         {
             Models.User.removeUser(id);
