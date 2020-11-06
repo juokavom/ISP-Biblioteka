@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                @Html.ActionLink("Biblioteka 389", "Register", "AfterLogin", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Biblioteka 389", "AfterLogin", "Register", new { area = "" }, new { @class = "navbar-brand" })
                 
             </div>
             <div class="navbar-collapse collapse">
@@ -25,7 +25,20 @@
                     <li>@Html.ActionLink("Knygos", "Index", "Home")</li>
                     @if (@Session["type"].Equals(2))
                     {
-                        <li>@Html.ActionLink("Ataskaitos", "About", "Home")</li>
+                        <li>
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ataskaitos
+                            </a>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li>@Html.ActionLink("Užsakymų istorija", "UzsakymuIstorija", "Ataskaita")</li>
+                                <li>@Html.ActionLink("Knygų statistika", "KnyguStatistika", "Ataskaita")</li>
+                                <li>@Html.ActionLink("Neaktyvūs vartotojai", "NeaktyvusVartotojai", "Ataskaita")</li>
+                                <li>@Html.ActionLink("Metinė/mėnesinė ataskaita", "MetMenAtaskaita", "Ataskaita")</li>
+                                <li>@Html.ActionLink("Įsiskolinę skaitytojai", "IsiskolineSkaitytojai", "Ataskaita")</li>
+                                <li>@Html.ActionLink("Ataskaitų išsiuntimas", "AtaskaituSiuntimas", "Ataskaita")</li>
+                            </ul>
+                        </li>
                         <li>@Html.ActionLink("Knygų įtraukimas", "About", "Home")</li>
                     }
                     @if (@Session["type"].Equals(3))

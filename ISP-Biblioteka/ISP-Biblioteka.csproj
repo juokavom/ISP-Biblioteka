@@ -171,6 +171,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AtaskaitaController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -178,6 +179,7 @@
     </Compile>
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\UzsakymuIstorijaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -219,6 +221,12 @@
     <Content Include="Views\Register\Confirm.cshtml" />
     <Content Include="Views\Register\AfterLogin.cshtml" />
     <Content Include="Views\Register\Forgot.cshtml" />
+    <Content Include="Views\Ataskaita\UzsakymuIstorija.cshtml" />
+    <Content Include="Views\Ataskaita\KnyguStatistika.cshtml" />
+    <Content Include="Views\Ataskaita\NeaktyvusVartotojai.cshtml" />
+    <Content Include="Views\Ataskaita\MetMenAtaskaita.cshtml" />
+    <Content Include="Views\Ataskaita\IsiskolineSkaitytojai.cshtml" />
+    <Content Include="Views\Ataskaita\AtaskaituSiuntimas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
