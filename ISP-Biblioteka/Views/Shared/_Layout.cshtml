@@ -22,11 +22,9 @@
                 <ul class="nav navbar-nav">
                     @if (@Session["type"].Equals(2))
                     {
-                        //Bibliotekininko pasiekiami langai
                     }
                     @if (@Session["type"].Equals(3))
                     {
-                        //Administratoriaus pasiekiami langai
                         <li>@Html.ActionLink("Vartotojai", "Index", "Users")</li>
                     }
                     <li class="dropdown">
@@ -35,7 +33,6 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Redaguoti duomenis", "Edit", "User", new { email = Session["email"]}, null)</li>
-                            <li>@Html.ActionLink("Nuotrauka", "", "", new { email = Session["email"]}, null)</li>
                             <li>@Html.ActionLink("Keisti slaptažodį", "Password", "User", new { email = Session["email"]}, null)</li>
                             <li>@Html.ActionLink("Naikinti paskyrą", "Remove", "User", new { email = Session["email"] }, null)</li>
                             @if (@Session["type"].Equals(1))

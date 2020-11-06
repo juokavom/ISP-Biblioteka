@@ -256,8 +256,7 @@ namespace ISP_Biblioteka.Models
                 Console.WriteLine(e);
                 return e;
             }
-        }
-
+        }        
         public Exception logSession(string ip, string browser)
         {
             try

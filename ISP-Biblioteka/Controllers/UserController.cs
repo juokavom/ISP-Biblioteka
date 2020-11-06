@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -49,6 +50,9 @@ namespace ISP_Biblioteka.Controllers
         }
         public JsonResult EditUser(Models.User user)
         {
+            string gender = "female";
+            if (user.Gender == 1) gender = "male";
+            user.Image = string.Format("~/Image/User/{0}.png", gender);
             user.updateToDb();
             return Json(JsonRequestBehavior.AllowGet);
         }
