@@ -35,6 +35,9 @@ namespace ISP_Biblioteka.Controllers
         }
         public JsonResult CreateUser(Models.User user)
         {
+            string gender = "female";
+            if (user.Gender == 1) gender = "male";
+            user.Image = string.Format("~/Image/User/{0}.png", gender);
             user.insertToDb();
             return Json(JsonRequestBehavior.AllowGet);
         }

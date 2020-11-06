@@ -28,6 +28,10 @@
                     <input id="Email" name="Email" class="col-sm-4 form-control" type="text">
                 </div>
                 <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Slaptažodis</label>
+                    <input id="Password" name="Password" class="col-sm-4 form-control" type="password">
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Vardas</label>
                     <input id="Name" name="Name" class="col-sm-4 form-control" type="text">
                 </div>
@@ -96,6 +100,7 @@
         $("#message1").hide();
         $("#message2").hide();
         var email = $("#Email").val();
+        var password = $("#Password").val();
         var name = $("#Name").val();
         var surname = $("#Surname").val();
         var phone = $("#Phone").val();
@@ -106,14 +111,8 @@
         var type = $("#Type").val();
 
         if (name == "" || surname == "" || phone == "" || address == ""
-            || email == "" || gender == "----------" || validation == "----------" || type == "----------") {
+            || email == "" || password == "" || gender == "----------" || validation == "----------" || type == "----------") {
             $("#message2").show();
-            /*if (gender == 1) {
-                image = '~/Image/User/male.png';
-            }
-            else if (gender == 2) {
-                image = '~/Image/User/female.png';
-            }*/
             return false;
         }
 
