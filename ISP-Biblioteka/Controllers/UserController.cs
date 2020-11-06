@@ -19,6 +19,12 @@ namespace ISP_Biblioteka.Controllers
             user.updateValues();
             return View(user);
         }
+        public ActionResult Password(string email)
+        {
+            Models.User user = new Models.User { Email = email };
+            user.updateValues();
+            return View(user);
+        }
         public ActionResult Create()
         {
             return View();
@@ -39,6 +45,11 @@ namespace ISP_Biblioteka.Controllers
             if (user.Gender == 1) gender = "male";
             user.Image = string.Format("~/Image/User/{0}.png", gender);
             user.insertToDb();
+            return Json(JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult ChangePassword(string password, string email)
+        {
+            Models.User.changePassword(email, password);
             return Json(JsonRequestBehavior.AllowGet);
         }
     }

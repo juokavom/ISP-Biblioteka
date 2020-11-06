@@ -93,7 +93,7 @@ namespace ISP_Biblioteka.Models
             {
                 string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = @"UPDATE `user` SET `name`=?name,`surname`=?surname, `address`=?address,`phone`=?phone,"+
+                string sqlquery = @"UPDATE `user` SET `name`=?name,`surname`=?surname, `address`=?address,`phone`=?phone," +
                     "`image`=?image,`gender`=?gender,`validation`=?validation,`type`=?type WHERE `id`=?id";
 
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
@@ -118,7 +118,6 @@ namespace ISP_Biblioteka.Models
             }
 
         }
-
         public Exception updateValues()
         {
             try
