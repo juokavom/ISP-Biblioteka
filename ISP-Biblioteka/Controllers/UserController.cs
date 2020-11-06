@@ -26,8 +26,8 @@ namespace ISP_Biblioteka.Controllers
         }
         public JsonResult EditUser(Models.User user)
         {
-            Models.User.removeUser(id);
-            return Json("", JsonRequestBehavior.AllowGet);
+            user.updateToDb();
+            return Json(JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -87,6 +87,37 @@ namespace ISP_Biblioteka.Models
             }
 
         }
+        public Exception updateToDb()
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"UPDATE `user` SET `name`=?name,`surname`=?surname, `address`=?address,`phone`=?phone,"+
+                    "`image`=?image,`gender`=?gender,`validation`=?validation,`type`=?type WHERE `id`=?id";
+
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = ID;
+                mySqlCommand.Parameters.Add("?name", MySqlDbType.VarChar).Value = Name;
+                mySqlCommand.Parameters.Add("?surname", MySqlDbType.VarChar).Value = Surname;
+                mySqlCommand.Parameters.Add("?address", MySqlDbType.VarChar).Value = Address;
+                mySqlCommand.Parameters.Add("?phone", MySqlDbType.VarChar).Value = Phone;
+                mySqlCommand.Parameters.Add("?image", MySqlDbType.VarChar).Value = Image;
+                mySqlCommand.Parameters.Add("?gender", MySqlDbType.Int32).Value = Gender;
+                mySqlCommand.Parameters.Add("?validation", MySqlDbType.Int32).Value = Validation;
+                mySqlCommand.Parameters.Add("?type", MySqlDbType.Int32).Value = Type;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+
+        }
 
         public Exception updateValues()
         {
