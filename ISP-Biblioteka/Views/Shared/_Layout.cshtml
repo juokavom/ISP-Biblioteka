@@ -35,6 +35,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Redaguoti duomenis", "Edit", "User", new { email = Session["email"]}, null)</li>
+                            <li>@Html.ActionLink("Nuotrauka", "", "", new { email = Session["email"]}, null)</li>
                             <li>@Html.ActionLink("Keisti slaptažodį", "", "", new { email = Session["email"]}, null)</li>
                             <li>@Html.ActionLink("Naikinti paskyrą", "", "", new { email = Session["email"]}, null)</li>
                             @if (@Session["type"].Equals(1))

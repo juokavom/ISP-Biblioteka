@@ -71,7 +71,7 @@ namespace ISP_Biblioteka.Models
                 mySqlCommand.Parameters.Add("?email", MySqlDbType.VarChar).Value = Email;
                 mySqlCommand.Parameters.Add("?address", MySqlDbType.VarChar).Value = Address;
                 mySqlCommand.Parameters.Add("?phone", MySqlDbType.VarChar).Value = Phone;
-                mySqlCommand.Parameters.Add("?image", MySqlDbType.VarChar).Value = Image;
+                mySqlCommand.Parameters.Add("?image", MySqlDbType.VarChar).Value = "test";
                 mySqlCommand.Parameters.Add("?gender", MySqlDbType.Int32).Value = Gender;
                 mySqlCommand.Parameters.Add("?validation", MySqlDbType.Int32).Value = Validation;
                 mySqlCommand.Parameters.Add("?type", MySqlDbType.Int32).Value = Type;

@@ -15,9 +15,13 @@ namespace ISP_Biblioteka.Controllers
         }
         public ActionResult Edit(string email)
         {
-            Models.User user = new Models.User { Email = email};
+            Models.User user = new Models.User { Email = email };
             user.updateValues();
             return View(user);
+        }
+        public ActionResult Create()
+        {
+            return View();
         }
         public JsonResult RemoveUser(int id)
         {
@@ -27,6 +31,11 @@ namespace ISP_Biblioteka.Controllers
         public JsonResult EditUser(Models.User user)
         {
             user.updateToDb();
+            return Json(JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult CreateUser(Models.User user)
+        {
+            user.insertToDb();
             return Json(JsonRequestBehavior.AllowGet);
         }
     }

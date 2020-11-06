@@ -1,15 +1,13 @@
-﻿@model ISP_Biblioteka.Models.User
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Redagavimas</title>
+    <title>Kūrimas</title>
 </head>
 <body onload="start()">
     <br>
-    <h1 style="text-align:left">Redagavimas</h1>
+    <h1 style="text-align:left">Vartotojo kūrimas</h1>
     <div id="message1">
         <div class="alert alert-success">
             <span class="glyphicon glyphicon-ok"></span><strong>
@@ -24,64 +22,57 @@
     </div>
     <div class="modal-dialog two-col">
         <div class="modal-body col1">
-            <div class="col2">
-                <img src="@Url.Content(Model.Image.ToString())" width="200" height="200" style="padding:20px">
-            </div>
             <form id="Editing">
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">ID</label>
-                    <input id="ID" name="ID" class="col-md-4 form-control" type="text" value="@Model.ID" readonly>
-                </div>
-                <div class="form-group row">
                     <label class="col-sm-2 col-form-label">El.Paštas</label>
-                    <input id="Email" name="Email" class="col-sm-4 form-control" type="text" value="@Model.Email" readonly>
+                    <input id="Email" name="Email" class="col-sm-4 form-control" type="text">
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Vardas</label>
-                    <input id="Name" name="Name" class="col-sm-4 form-control" type="text" value="@Model.Name">
+                    <input id="Name" name="Name" class="col-sm-4 form-control" type="text">
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Pavardė</label>
-                    <input id="Surname" name="Surname" class="col-sm-4 form-control" type="text" value="@Model.Surname">
+                    <input id="Surname" name="Surname" class="col-sm-4 form-control" type="text">
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Adresas</label>
-                    <input id="Address" name="Address" class="col-sm-4 form-control" type="text" value="@Model.Address">
+                    <input id="Address" name="Address" class="col-sm-4 form-control" type="text">
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Telefonas</label>
-                    <input id="Phone" name="Phone" class="col-sm-4 form-control" type="text" value="@Model.Phone">
+                    <input id="Phone" name="Phone" class="col-sm-4 form-control" type="text">
                 </div>
                 <div class="form-group row" style="display:none">
                     <label class="col-sm-2 col-form-label">Nuotrauka</label>
-                    <input id="Image" name="Image" class="col-sm-4 form-control" type="text" value="@Model.Image">
+                    <input id="Image" name="Image" class="col-sm-4 form-control" type="text">
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Lytis</label>
                     <select id="Gender" name="Gender" class="form-control">
+                        <option value="0">----------</option>
                         <option value="1">Vyras</option>
                         <option value="2">Moteris</option>
                     </select>
                 </div>
-                @if (Session["type"].Equals(3))
-                {
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Validacija</label>
-                        <select id="Validation" name="Validation" class="form-control">
-                            <option value="0">Nepatvirtintas</option>
-                            <option value="1">Patvirtintas</option>
-                            <option value="2">Užblokuotas</option>
-                        </select>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Tipas</label>
-                        <select id="Type" name="Type" class="form-control">
-                            <option value="1">Skaitytojas</option>
-                            <option value="2">Bibliotekininkas</option>
-                            <option value="3">Moderatorius</option>
-                        </select>
-                    </div>
-                }
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Validacija</label>
+                    <select id="Validation" name="Validation" class="form-control">
+                        <option>----------</option>
+                        <option value="0">Nepatvirtintas</option>
+                        <option value="1">Patvirtintas</option>
+                        <option value="2">Užblokuotas</option>
+                    </select>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Tipas</label>
+                    <select id="Type" name="Type" class="form-control">
+                        <option>----------</option>
+                        <option value="1">Skaitytojas</option>
+                        <option value="2">Bibliotekininkas</option>
+                        <option value="3">Moderatorius</option>
+                    </select>
+                </div>
             </form>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit" onclick="SaveForm()">Išsaugoti</button>
@@ -97,9 +88,6 @@
 
 <script>
     function start() {
-        $("#Gender").val(`${@Model.Gender}`);
-        $("#Validation").val(`${@Model.Validation}`);
-        $("#Type").val(`${@Model.Type}`);
         $("#message1").hide();
         $("#message2").hide();
     }
@@ -107,21 +95,34 @@
     function SaveForm() {
         $("#message1").hide();
         $("#message2").hide();
+        var email = $("#Email").val();
         var name = $("#Name").val();
         var surname = $("#Surname").val();
         var phone = $("#Phone").val();
         var address = $("#Address").val();
+        var image;
+        var gender = $("#Gender").val();
+        var validation = $("#Validation").val();
+        var type = $("#Type").val();
 
-        if (name == "" || surname == "" || phone == "" || address == "") {
+        if (name == "" || surname == "" || phone == "" || address == ""
+            || email == "" || gender == "----------" || validation == "----------" || type == "----------") {
             $("#message2").show();
+            /*if (gender == 1) {
+                image = '~/Image/User/male.png';
+            }
+            else if (gender == 2) {
+                image = '~/Image/User/female.png';
+            }*/
             return false;
         }
+
 
         var data = $("#Editing").serialize();
         $.ajax({
             type: "post",
             data: data,
-            url: "/User/EditUser",
+            url: "/User/CreateUser",
             success: function () {
                 $("#message1").show();
                 $("#Editing").reset();
