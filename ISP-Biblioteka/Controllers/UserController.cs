@@ -30,6 +30,15 @@ namespace ISP_Biblioteka.Controllers
         {
             return View();
         }
+        public ActionResult Orders(string email)
+        {
+            //TODO
+            //Pasiimt listą orderių iš DB ir siųst
+            //per paramsus viewsui, kuris foreachins 
+            //kiekvieną orderi i lentele
+            //O userio identifikavima paims is sesijos
+            return View();
+        }
         public ActionResult Remove(string email)
         {
             Models.User user = new Models.User { Email = email };

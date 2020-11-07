@@ -226,6 +226,7 @@
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Password.cshtml" />
     <Content Include="Views\User\Remove.cshtml" />
+    <Content Include="Views\User\Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
