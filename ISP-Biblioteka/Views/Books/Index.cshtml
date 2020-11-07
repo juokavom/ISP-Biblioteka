@@ -1,0 +1,93 @@
+﻿@model List<ISP_Biblioteka.Models.Book>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Knygų tvarkymas</title>
+</head>
+<body>
+    <br>
+    <br>
+    <div class="form-group" id="previous3">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+            <input class="form-control" type="search" name="search" id="search" placeholder="Knygos paieška" />
+        </div>
+        <div class="form-group" id="previous3">
+            <button class="btn btn-primary" type="submit" onclick="Reminder()"><i class="glyphicon glyphicon-search"></i>Ieškoti</button>
+            
+        </div>     
+    </div>
+    
+    <br>
+    <br>
+    <div class="alert alert-danger" id="removeAl" style="display:none">
+        <strong style="padding-right: 15px"></span>Ar tikrai norite pašalinti knygą: ?</strong>
+        <button class="btn btn-warning" back type="submit" onclick="reroute()">Taip</button>
+    </div>
+    <h1 style="text-align:left">Knygos</h1>
+    <p class="name"><a class="btn btn-primary" href="">Kurti naują knygą</a></p>
+    <br>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th>Pavadinimas</th>
+                <th>Metai</th>
+                <th>Puslapių skaičius</th>
+                <th>ISBN</th>
+            </tr>
+        </thead>
+        <tbody>
+        <th></th>
+        <th><i>Knyga</i></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th><a class="btn btn-primary" onclick="Edit()">Redaguoti</th>
+        <th><a class="btn btn-primary" onclick="Delete()">Šalinti</th>
+
+
+
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="ShowModal">
+        <div class="modal-dialog">
+            <div class="alert alert-warning" id="previous">
+                <strong id="salVart"></strong>
+                <input type="submit" class="btn btn-danger" value="Taip" onclick="Removed()" />
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .table {
+            padding-top: 20px;
+        }
+    </style>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        var removeId;
+        function remove(id) {
+            removeId = id;
+            document.getElementById("salVart").innerHTML = `Ar tikrai norite pašalinti vartotoją ? ID = ${id}`;
+            $("#ShowModal").modal();
+        }
+        function Removed() {
+            $("#ShowModal").modal('hide');
+            $(`#${removeId}`).hide();
+            $.ajax({
+                type: "post",
+                url: "/User/RemoveUser",
+                data: { 'id': removeId }
+            });
+        }
+
+    </script>
+
+
+</body>
+</html>
