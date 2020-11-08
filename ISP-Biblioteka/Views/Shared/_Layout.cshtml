@@ -17,13 +17,13 @@
                     <span class="icon-bar"></span>
                 </button>
 
-
                 @Html.ActionLink("Biblioteka 389", "AfterLogin", "Register", new { area = "" }, new { @class = "navbar-brand" })
                 
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-
+                    <li>@Html.ActionLink("Knygos", "AfterLogin", "Register")</li>
+                    @Session["type"] = 2;
                     @if (@Session["type"].Equals(2))
                     {
                         <li>
@@ -53,6 +53,7 @@
                     @if (@Session["type"].Equals(2))
                     {
                         <li>@Html.ActionLink("Užsakymai", "OrderRequests", "Orders")</li>
+                        <li>@Html.ActionLink("Inventorizacija", "Index", "Inventory")</li>
                     }
                     @if (@Session["type"].Equals(3))
                     {
