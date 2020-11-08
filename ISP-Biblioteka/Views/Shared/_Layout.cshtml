@@ -22,11 +22,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Knygos", "AfterLogin", "Register")</li>
-                    @Session["type"] = 2;
+                    @if (@Session["type"].Equals(3))
+                    {
+                        <li>@Html.ActionLink("Vartotojai", "Index", "Users")</li>
+                        <li>@Html.ActionLink("Laiškas vartotojams", "Index", "NewsLetter")</li>
+                    }
                     @if (@Session["type"].Equals(2))
                     {
-                        <li>
+                        <li class="dropdown">
                             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Ataskaitos
                             </a>
@@ -40,25 +43,16 @@
                                 <li>@Html.ActionLink("Ataskaitų siuntimas", "AtaskaituSiuntimas", "Ataskaita")</li>
                             </ul>
                         </li>
-                        <li>@Html.ActionLink("Knygų įtraukimas", "About", "Home")</li>
                         <li>@Html.ActionLink("Knygų tvarkymas", "Index", "Books")</li>
+                        <li>@Html.ActionLink("Užsakymai", "OrderRequests", "Orders")</li>
+                        <li>@Html.ActionLink("Inventorizacija", "Index", "Inventory")</li>
                     }
                     @if (@Session["type"].Equals(1))
                     {
                         <li>@Html.ActionLink("Atlikti užsakymą", "MakeOrder", "Orders")</li>
-                        <li>@Html.ActionLink("Užsakymų istorija", "Orders", "User", new { email = Session["email"] }, null)</li>
                         <li>@Html.ActionLink("Aktyvūs užsakymai", "Index", "Orders", new { email = Session["email"] }, null)</li>
                         <li>@Html.ActionLink("Paprašyti knygos", "RequestBook", "Orders", new { email = Session["email"] }, null)</li>
-                    }
-                    @if (@Session["type"].Equals(2))
-                    {
-                        <li>@Html.ActionLink("Užsakymai", "OrderRequests", "Orders")</li>
-                        <li>@Html.ActionLink("Inventorizacija", "Index", "Inventory")</li>
-                    }
-                    @if (@Session["type"].Equals(3))
-                    {
-                        <li>@Html.ActionLink("Vartotojai", "Index", "Users")</li>
-                        <li>@Html.ActionLink("Laiškas vartotojams", "Index", "NewsLetter")</li>
+                        <li>@Html.ActionLink("Knygos", "Tvarkyti", "Books")</li>
                     }
 
                     <li class="dropdown">
@@ -68,12 +62,13 @@
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Redaguoti duomenis", "Edit", "User", new { email = Session["email"] }, null)</li>
                             <li>@Html.ActionLink("Keisti slaptažodį", "Password", "User", new { email = Session["email"] }, null)</li>
+                            @if (@Session["type"].Equals(1))
+                            {
+                                <li>@Html.ActionLink("Užsakymų istorija", "Orders", "User", new { email = Session["email"] }, null)</li>
+                            }
                             <li>@Html.ActionLink("Naikinti paskyrą", "Remove", "User", new { email = Session["email"] }, null)</li>
                         </ul>
                     </li>
-                        <li>@Html.ActionLink("Knygų tvarkymas", "Index", "Books")</li>
-                    }
-                    <li>@Html.ActionLink("Knygos", "Tvarkyti", "Books")</li>
                 </ul>
                 <p class="name"><a class="btn btn-primary" href="/Register/Logout"> Atsijungti</a></p><p class="name sveiki"> Sveiki, @Session["name"]!</p>
             </div>
