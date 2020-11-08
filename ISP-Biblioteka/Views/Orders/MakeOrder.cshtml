@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<style>
+    #parent_div_1, #parent_div_2 {
+        width: 40%;
+        height: 70%;
+        margin-right: 10%;
+        float: left;
+    }
+</style>
+<h2 align="center">Atlikti užsakymą</h2>
+<div align="center">
+    <div id="parent_div_1" style="padding-left:20%;">
+        <h4>Knyga: Placeholder</h4>
+        <h5>Autorius: Placeholder</h5>
+        <img src="" width="140" height="190">
+    </div>
+    <div class="modal-dialog two-col">
+        <div class="modal-body col1">
+            <form>
+                <div id="parent_div_2">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">El.Paštas</label>
+                        <input id="Email" name="Email" class="col-sm-4 form-control" type="text" value="" readonly>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Vardas</label>
+                        <input id="Name" name="Name" class="col-sm-4 form-control" type="text" value="">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Pavardė</label>
+                        <input id="Surname" name="Surname" class="col-sm-4 form-control" type="text" value="">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Telefonas</label>
+                        <input id="Phone" name="Phone" class="col-sm-4 form-control" type="text" value="">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">Atlikti užsakymą</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+<div style="padding-top:30%"></div>

@@ -40,10 +40,18 @@
                             </ul>
                         </li>
                         <li>@Html.ActionLink("Knygų įtraukimas", "About", "Home")</li>
+                    @if (@Session["type"].Equals(1))
+                    {
+                        <li>@Html.ActionLink("Atlikti užsakymą", "MakeOrder", "Orders")</li>
+                    }
+                    @if (@Session["type"].Equals(2))
+                    {
+                        <li>@Html.ActionLink("Užsaykmai", "OrderRequests", "Orders")</li>
                     }
                     @if (@Session["type"].Equals(3))
                     {
                         <li>@Html.ActionLink("Vartotojai", "Index", "Users")</li>
+                        <li>@Html.ActionLink("Laiškas vartotojams", "Index", "NewsLetter")</li>
                     }
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
@@ -55,7 +63,8 @@
                             @if (@Session["type"].Equals(1))
                             {
                                 <li>@Html.ActionLink("Užsakymų istorija", "Orders", "User", new { email = Session["email"] }, null)</li>
-                            }
+                                <li>@Html.ActionLink("Aktyvūs užsakymai", "Index", "Orders", new { email = Session["email"] }, null)</li>
+                                <li>@Html.ActionLink("Paprašyti knygos", "RequestBook", "Orders", new { email = Session["email"] }, null)</li>
                             <li>@Html.ActionLink("Naikinti paskyrą", "Remove", "User", new { email = Session["email"] }, null)</li>
                         </ul>
                     </li>
