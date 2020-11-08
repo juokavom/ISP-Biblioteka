@@ -1,0 +1,70 @@
+﻿@model List<ISP_Biblioteka.Models.Book>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Knygos paėmimo istorija</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+    <h1 style="text-align:left">Knygos paėmimo istorija</h1>
+    <br>
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th>Pavadinimas</th>
+                <th></th>
+                <th>Paėmimo data</th>
+                <th></th>
+                <th>Grąžinimo data</th>
+            </tr>
+        </thead>
+        <tbody>
+        <th></th>
+        <th><i>Knyga</i></th>
+
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="ShowModal">
+        <div class="modal-dialog">
+            <div class="alert alert-warning" id="previous">
+                <strong id="salVart"></strong>
+                <input type="submit" class="btn btn-danger" value="Taip" onclick="Removed()" />
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .table {
+            padding-top: 20px;
+        }
+    </style>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        var removeId;
+        function remove(id) {
+            removeId = id;
+            document.getElementById("salVart").innerHTML = `Ar tikrai norite pašalinti vartotoją ? ID = ${id}`;
+            $("#ShowModal").modal();
+        }
+        function Removed() {
+            $("#ShowModal").modal('hide');
+            $(`#${removeId}`).hide();
+            $.ajax({
+                type: "post",
+                url: "/User/RemoveUser",
+                data: { 'id': removeId }
+            });
+        }
+
+    </script>
+
+
+</body>
+</html>
