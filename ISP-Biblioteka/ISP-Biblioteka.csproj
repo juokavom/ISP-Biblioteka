@@ -238,6 +238,8 @@
     <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\NewsLetter\Index.cshtml" />
     <Content Include="Views\Orders\RequestBook.cshtml" />
+    <Content Include="Views\Orders\MakeOrder.cshtml" />
+    <Content Include="Views\Orders\OrderRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

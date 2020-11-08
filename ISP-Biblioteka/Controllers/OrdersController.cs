@@ -22,5 +22,13 @@ namespace ISP_Biblioteka.Controllers
             user.updateValues();
             return View(user);
         }
+        public ActionResult MakeOrder()
+        {
+            return View();
+        }
+        public ActionResult OrderRequests()
+        {
+            return View();
+        }
     }
 }

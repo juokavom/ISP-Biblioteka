@@ -20,8 +20,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @if (@Session["type"].Equals(1))
+                    {
+                        <li>@Html.ActionLink("Atlikti užsakymą", "MakeOrder", "Orders")</li>
+                    }
                     @if (@Session["type"].Equals(2))
                     {
+                        <li>@Html.ActionLink("Užsaykmai", "OrderRequests", "Orders")</li>
                     }
                     @if (@Session["type"].Equals(3))
                     {
