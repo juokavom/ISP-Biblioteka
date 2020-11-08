@@ -13,5 +13,13 @@ namespace ISP_Biblioteka.Controllers
         {
             return View();
         }
+        public ActionResult Tvarkyti()
+        {
+            return View();
+        }
+        public ActionResult History()
+        {
+            return View();
+        }
     }
 }
