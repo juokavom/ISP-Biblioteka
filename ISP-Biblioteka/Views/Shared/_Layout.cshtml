@@ -22,20 +22,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
-                            Paskyra
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Redaguoti duomenis", "Edit", "User", new { email = Session["email"] }, null)</li>
-                            <li>@Html.ActionLink("Keisti slaptažodį", "Password", "User", new { email = Session["email"] }, null)</li>
-                            @if (@Session["type"].Equals(1))
-                            {
-
-                                <li>@Html.ActionLink("Naikinti paskyrą", "Remove", "User", new { email = Session["email"] }, null)</li>
-                            }
-                        </ul>
-                    </li>
                     <li>@Html.ActionLink("Knygos", "Index", "Home")</li>
                     @if (@Session["type"].Equals(2))
                     {
@@ -72,6 +58,16 @@
                         <li>@Html.ActionLink("Laiškas vartotojams", "Index", "NewsLetter")</li>
                     }
 
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown">
+                            Paskyra
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Redaguoti duomenis", "Edit", "User", new { email = Session["email"] }, null)</li>
+                            <li>@Html.ActionLink("Keisti slaptažodį", "Password", "User", new { email = Session["email"] }, null)</li>
+                            <li>@Html.ActionLink("Naikinti paskyrą", "Remove", "User", new { email = Session["email"] }, null)</li>
+                        </ul>
+                    </li>
                 </ul>
                 <p class="name"><a class="btn btn-primary" href="/Register/Logout"> Atsijungti</a></p><p class="name sveiki"> Sveiki, @Session["name"]!</p>
             </div>
