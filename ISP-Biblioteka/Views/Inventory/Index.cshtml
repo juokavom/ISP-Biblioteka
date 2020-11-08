@@ -25,12 +25,61 @@
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
         }
+        .alignedBar
+        {            
+            position: relative;
+            margin: 0;
+            margin-top: 4%;
+            margin-bottom: 0px;
+            left: 50%;
+            padding: 0px;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
     <div id="searchArea" class="col text-center">
         <input class="form-control input-lg" id="inventorySearchBar" type="text" placeholder="Ieškomas inventorius..." />
         <small class="form-text text-muted" id="inventorySearchBarLabel">Įveskite ieškomo daikto pavadinimą arba ID.</small>
+
+        <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#registerInventory" <!--data-url="//Url.Action("Create")"-->Pridėti</button>
+
+        <div class="modal" id="registerInventory" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal"></button>
+                        <h4>Registruoti inventorių</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <small class="form-text text-muted" id="addInventoryNameLabel">Įveskite pridedamo inventoriaus pavadinimą</small>
+                        <input class="form-control input col text-center alignedBar" id="addInventoryName" type="text" placeholder="Pavadinimas" />
+
+                        <small class="form-text text-muted id="addInventoryIDLabel">Įveskite pridedamo inventoriaus ID</small>
+                        <input class="form-control input col text-center alignedBar" id="addInventoryID" type="text" placeholder="ID" />
+
+                        <small class="form-text text-muted" id="addInventoryCostLabel">Įveskite pridedamo inventoriaus kainą</small>
+                        <input class="form-control input col text-center alignedBar" id="addInventoryCost" type="text" placeholder="Kaina" />
+
+                        <small class="form-text text-muted" id="addInventoryTypeLabel">Pasirinkite inventoriaus tipą</small>
+                        <select name="inventoryType" id="inventoryType">
+                            <option value="Knyga">Knyga</option>
+                            <option value="Kompiuteris">Kompiuteris</option>
+                            <option value="Spausdintuvas">Spausdintuvas</option>
+                            <option value="Monitorius">Monitorius</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-footer col text-center">
+                        <button type="submit" class="btn btn-primary">Saugoti</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="col text-center">
