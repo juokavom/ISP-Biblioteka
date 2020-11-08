@@ -58,7 +58,7 @@
                     @if (@Session["type"].Equals(1))
                     {
                         <li>@Html.ActionLink("Atlikti užsakymą", "MakeOrder", "Orders")</li>
-                        <li>@Html.ActionLink("Užsakymų istorija", "UzsakymuIstorija", "User", new { email = Session["email"] }, null)</li>
+                        <li>@Html.ActionLink("Užsakymų istorija", "Orders", "User", new { email = Session["email"] }, null)</li>
                         <li>@Html.ActionLink("Aktyvūs užsakymai", "Index", "Orders", new { email = Session["email"] }, null)</li>
                         <li>@Html.ActionLink("Paprašyti knygos", "RequestBook", "Orders", new { email = Session["email"] }, null)</li>
                     }
