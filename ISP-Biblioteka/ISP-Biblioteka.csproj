@@ -195,6 +195,9 @@
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repos\NeaktyvusVartotojaiRepository.cs" />
+    <Compile Include="ViewModels\NeaktyvusVartotojaiViewModel.cs" />
+    <Compile Include="ViewModels\NeaktyvusViewModel.cs" />
     <Compile Include="ViewModels\UzsakymuIstorijaViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
