@@ -33,9 +33,11 @@ namespace ISP_Biblioteka.Controllers
             siunt.to = _objModelMail.to == null ? null : _objModelMail.to;
             PopulateSelections2(siunt);
             string text = "";
+            string sub = "";
             if (siunt.ataskaitos_tipas == 1)
             {
                 text = repository.getAtaskaitos();
+                sub = "Neprisijungę vartotojai per 6 mėnesius";
             }
                 
 
@@ -45,7 +47,7 @@ namespace ISP_Biblioteka.Controllers
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
                 mail.From = new MailAddress("biblioteka389@gmail.com");
                 mail.To.Add(siunt.to);
-                mail.Subject = "test ";
+                mail.Subject = sub;
                 mail.Body += text;
 
                 mail.IsBodyHtml = true;
@@ -69,9 +71,16 @@ namespace ISP_Biblioteka.Controllers
         {
             return View();
         }
-        public ActionResult KnyguStatistika()
+        public ActionResult KnyguStatistika(DateTime? year_from, DateTime? year_to)
         {
-            return View();
+            KnyguStatistikaViewModel2 knygos = new KnyguStatistikaViewModel2();
+
+            knygos.year_from = year_from == null ? null : year_from;
+            knygos.year_to = year_to == null ? null : year_to;
+
+            knygos.knyg = repository.getKnyguStatistika(knygos.year_from, knygos.year_to);
+
+            return View(knygos);
         }
         public ActionResult MetMenAtaskaita()
         {

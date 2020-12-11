@@ -1,4 +1,4 @@
-﻿@model ISP_Biblioteka.ViewModels.UzsakymuIstorijaViewModel
+﻿@model ISP_Biblioteka.ViewModels.KnyguStatistikaViewModel2
 @{
     ViewBag.Title = "Knygų statistika";
 }
@@ -7,68 +7,66 @@
 <br>
 <h2>Knygų statistika</h2>
 
-@if (Session["email"] != null)
+@using (Html.BeginForm())
 {
     <br>
     <br>
     <div class="form-group">
-        @Html.LabelFor(model => model.nuo, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.year_from, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.nuo, new { htmlAttributes = new { @class = "form-control date-picker" } })
-            @Html.ValidationMessageFor(model => model.nuo, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.year_from, new { htmlAttributes = new { @class = "form-control date-picker" } })
+            @Html.ValidationMessageFor(model => model.year_from, "", new { @class = "text-danger" })
         </div>
     </div>
+
     <div class="form-group">
-        @Html.LabelFor(model => model.iki, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.year_to, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.iki, new { htmlAttributes = new { @class = "form-control date-picker" } })
-            @Html.ValidationMessageFor(model => model.iki, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.year_to, new { htmlAttributes = new { @class = "form-control date-picker" } })
+            @Html.ValidationMessageFor(model => model.year_to, "", new { @class = "text-danger" })
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.darbuotojas, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.darbuotojas, new { htmlAttributes = new { @class = "form-control" } })
-            @*Html.DropDownListFor(model => model.darbuotojas, Model.DarbuotojaiList, "", new { @class = "form-control" })*@
-            @Html.ValidationMessageFor(model => model.darbuotojas, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.valiuta, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.valiuta, new { htmlAttributes = new { @class = "form-control" } })
-            @*Html.DropDownListFor(model => model.valiuta, Model.ValiutosList, "", new { @class = "form-control" })*@
-            @Html.ValidationMessageFor(model => model.valiuta, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.numeris, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.numeris, new { htmlAttributes = new { @class = "form-control" } })
-            @*Html.DropDownListFor(model => model.numeris, Model.NumeriaiList, "", new { @class = "form-control" })*@
-            @Html.ValidationMessageFor(model => model.numeris, "", new { @class = "text-danger" })
-        </div>
-        <input class="btn btn-default" type="submit" value="Atrinkti">
     </div>
 
     <table class="table table-striped">
         <tr style="background-color:lightblue">
             <th>
-                A
+                @Html.DisplayNameFor(model => model.knyg[0].title)
             </th>
             <th>
-                B
+                @Html.DisplayNameFor(model => model.knyg[0].year)
             </th>
             <th>
-                C
+                @Html.DisplayNameFor(model => model.knyg[0].pages)
             </th>
             <th>
-                D
-            </th>
-            <th>
-                E
+                @Html.DisplayNameFor(model => model.knyg[0].isbn)
             </th>
         </tr>
+
+        @if (Model.knyg.Count == 0)
+        {
+            <tr>
+                <td colspan="4" align="center"><b style="color:red;">Nurodytu laikotaarpiu visi vartotojai buvo prisijungę</b></td>
+            </tr>
+        }
+
+        @foreach (var item in Model.knyg)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pages)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isbn)
+                </td>
+            </tr>
+        }
 
 
     </table>

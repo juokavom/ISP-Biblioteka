@@ -132,5 +132,40 @@ namespace ISP_Biblioteka.Repos
             }
             return email;
         }
+
+        public List<KnyguStatistikaViewModel1> getKnyguStatistika(DateTime? year_from, DateTime? year_to)
+        {
+            List<KnyguStatistikaViewModel1> knygos = new List<KnyguStatistikaViewModel1>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT 
+                                    bo.title,
+                                    bo.year,
+                                    bo.pages,
+                                    bo.isbn
+                                from 
+                                    book bo;";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?year_from", MySqlDbType.Int32).Value = year_from;
+            mySqlCommand.Parameters.Add("?year_to", MySqlDbType.Int32).Value = year_to;
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                knygos.Add(new KnyguStatistikaViewModel1
+                {
+                    title = Convert.ToString(item["title"]),
+                    year = Convert.ToDateTime(item["year"]),
+                    pages = Convert.ToInt32(item["pages"]),
+                    isbn = Convert.ToString(item["isbn"])
+
+                }); ;
+            }
+            return knygos;
+        }
     }
 }
