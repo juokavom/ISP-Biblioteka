@@ -11,7 +11,9 @@ namespace ISP_Biblioteka.ViewModels
     public class NeaktyvusViewModel
     {
         public List<NeaktyvusVartotojaiViewModel> neaktyvus { get; set; }
-        public int laikotarpis { get; set; }
+
+        [DisplayName("Neaktyvumo laikotarpis: ")]
+        public int? period { get; set; }
         public IList<SelectListItem> LaikotarpisList { get; set; }
     }
 }

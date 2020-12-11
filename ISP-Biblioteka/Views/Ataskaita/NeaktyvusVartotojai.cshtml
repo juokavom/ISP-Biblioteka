@@ -7,15 +7,16 @@
 <br>
 <h2>Neaktyvūs vartotojai</h2>
 
-@if (Session["email"] != null)
+@using (Html.BeginForm())
 {
     <div class="form-group">
-        @Html.LabelFor(model => model.laikotarpis, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.period, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @*@Html.EditorFor(model => model.fk_marke, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.DropDownListFor(model => model.laikotarpis, Model.LaikotarpisList, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.laikotarpis, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.period, Model.LaikotarpisList, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.period, "", new { @class = "text-danger" })
         </div>
+        <input class="btn btn-default" type="submit" value="Atrinkti">
     </div>
 
     <table class="table table-striped">
@@ -27,13 +28,10 @@
                 @Html.DisplayNameFor(model => model.neaktyvus[0].surname)
             </th>
             <th>
-                C
+                @Html.DisplayNameFor(model => model.neaktyvus[0].email)
             </th>
             <th>
-                D
-            </th>
-            <th>
-                E
+                @Html.DisplayNameFor(model => model.neaktyvus[0].last_login)
             </th>
         </tr>
 
@@ -54,16 +52,13 @@
                     @Html.DisplayFor(modelItem => item.surname)
                 </td>
                 <td>
-                    C
+                    @Html.DisplayFor(modelItem => item.email)
                 </td>
                 <td>
-                    D
-                </td>
-                <td>
-                    E
+                    @Html.DisplayFor(modelItem => item.last_login)
                 </td>
             </tr>
-        }*/
+        }
 
     </table>
 }
