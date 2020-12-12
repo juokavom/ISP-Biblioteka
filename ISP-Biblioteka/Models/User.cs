@@ -330,5 +330,28 @@ namespace ISP_Biblioteka.Models
             }
             return type;
         }
+
+        public static List<Order> getOrders(string id)
+        {
+            List<Order> allOrders = new List<Order>();
+            string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT * FROM `order` WHERE fk_user_id = ?id";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = id;
+            mySqlConnection.Open();
+            mySqlCommand.ExecuteNonQuery();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                allOrders.Add(new Order(dt.Rows[i]));
+            }
+
+            return allOrders;
+        }
     }
 }
