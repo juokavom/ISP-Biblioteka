@@ -37,7 +37,7 @@ namespace ISP_Biblioteka.Controllers
             //per paramsus viewsui, kuris foreachins 
             //kiekvieną orderi i lentele
             //O userio identifikavima paims is sesijos
-            return View();
+            return View(Models.User.getOrders(Session["id"].ToString()));
         }
         public ActionResult Remove(string email)
         {

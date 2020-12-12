@@ -23,5 +23,13 @@ namespace ISP_Biblioteka.Models
         {
 
         }
+
+        public Order(DataRow row)
+        {
+            ID = Convert.ToInt16(row["id"]);
+            Borrow_date = Convert.ToDateTime(row["borrow_date"]);
+            Return_date = Convert.ToDateTime(row["return_date"]);
+            Validation_date = Convert.ToDateTime(row["validation_date"]);
+        }
     }
 }
