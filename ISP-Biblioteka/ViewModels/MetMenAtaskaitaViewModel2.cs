@@ -11,7 +11,7 @@ namespace ISP_Biblioteka.ViewModels
 {
     public class MetMenAtaskaitaViewModel2
     {
-        public List<UzsakymuIstorijaViewModel1> uzsak { get; set; }
+        public List<MetMenAtaskaitaViewModel1> uzsak { get; set; }
 
         [DisplayName("Laikotarpis: ")]
         public int? period { get; set; }

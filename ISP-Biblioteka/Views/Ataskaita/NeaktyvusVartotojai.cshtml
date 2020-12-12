@@ -9,15 +9,14 @@
 
 @using (Html.BeginForm())
 {
-    <div class="form-group">
-        @Html.LabelFor(model => model.period, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @*@Html.EditorFor(model => model.fk_marke, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.DropDownListFor(model => model.period, Model.LaikotarpisList, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.period, "", new { @class = "text-danger" })
-        </div>
-        <input class="btn btn-default" type="submit" value="Atrinkti">
+    <br>
+    <br>
+    @Html.LabelFor(model => model.period, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.period, Model.LaikotarpisList, "", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.period, "", new { @class = "text-danger" })
     </div>
+    <input class="btn btn-default" type="submit" value="Atrinkti">
 
     <table class="table table-striped">
         <tr style="background-color:lightblue">
@@ -44,20 +43,20 @@
 
         @foreach (var item in Model.neaktyvus)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.last_login)
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.last_login)
+                </td>
+            </tr>
         }
 
     </table>

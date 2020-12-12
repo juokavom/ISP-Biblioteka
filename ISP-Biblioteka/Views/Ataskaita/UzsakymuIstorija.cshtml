@@ -5,15 +5,19 @@
 <br>
 <br>
 <h2>Užsakymų istorija</h2>
-@if (Session["email"] != null)
+@using (Html.BeginForm())
 {
     <br>
     <br>
     @Html.LabelFor(model => model.period, htmlAttributes: new { @class = "control-label col-md-2" })
     <div class="col-md-10">
-        @*@Html.EditorFor(model => model.fk_marke, new { htmlAttributes = new { @class = "form-control" } })*@
         @Html.DropDownListFor(model => model.period, Model.LaikotarpisList, "", new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.period, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(model => model.user, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.user, Model.VartotojasList, "", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.user, "", new { @class = "text-danger" })
     </div>
     <input class="btn btn-default" type="submit" value="Atrinkti">
 
@@ -23,17 +27,23 @@
                 @Html.DisplayNameFor(model => model.uzsak[0].user)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.uzsak[0].book)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.uzsak[0].borrow_date)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.uzsak[0].return_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.uzsak[0].validation_date)
             </th>
         </tr>
 
         @if (Model.uzsak.Count == 0)
         {
             <tr>
-                <td colspan="4" align="center"><b style="color:red;">Nurodytu laikotarpiu užsakymų nebuvo atlikta!</b></td>
+                <td colspan="4" align="center"><b style="color:red;">Nerasta jokių užsakymų!</b></td>
             </tr>
         }
 
@@ -44,10 +54,16 @@
                     @Html.DisplayFor(modelItem => item.user)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.book)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.borrow_date)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.return_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.validation_date)
                 </td>
             </tr>
         }

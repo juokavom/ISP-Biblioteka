@@ -14,6 +14,11 @@ namespace ISP_Biblioteka.ViewModels
 
         [DisplayName("Laikotarpis: ")]
         public int? period { get; set; }
+
+        [DisplayName("Vartotojas: ")]
+        public int? user { get; set; }
         public IList<SelectListItem> LaikotarpisList { get; set; }
+
+        public IList<SelectListItem> VartotojasList { get; set; }
     }
 }

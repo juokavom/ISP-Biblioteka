@@ -133,6 +133,30 @@ namespace ISP_Biblioteka.Repos
             return email;
         }
 
+        public Dictionary<int,string> getUsers()
+        {
+            Dictionary<int,string> users = new Dictionary<int, string>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT distinct
+                                    concat(us.name, ' ', us.surname) user,
+                                    us.id
+                                from 
+                                    user us;";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                users.Add(Convert.ToInt32(item["id"]), Convert.ToString(item["user"]));
+            }
+            return users;
+        }
+
         public List<KnyguStatistikaViewModel1> getKnyguStatistika(DateTime? year_from, DateTime? year_to)
         {
             List<KnyguStatistikaViewModel1> knygos = new List<KnyguStatistikaViewModel1>();
@@ -168,15 +192,58 @@ namespace ISP_Biblioteka.Repos
             return knygos;
         }
 
-        public List<UzsakymuIstorijaViewModel1> getUzsakymuIstorija(int? period)
+        public List<UzsakymuIstorijaViewModel1> getUzsakymuIstorija(int? period, int? user)
         {
             List<UzsakymuIstorijaViewModel1> uzsak = new List<UzsakymuIstorijaViewModel1>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT
+                                    od.validation_date,
+                                    od.borrow_date, 
+                                    od.return_date,
+                                    concat(us.name, ' ', us.surname) name,
+                                    bo.title
+                                from 
+                                    `order` od
+                                        join user us on
+                                            od.fk_user_id=us.id
+                                        join book bo on
+                                            od.fk_book_id =  bo.id
+                                where
+                                    od.borrow_date>=IF(?period='', od.borrow_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.borrow_date)) and
+                                    us.id=IF(?user='', us.id, IFNULL( ?user, us.id));";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?period", MySqlDbType.Int32).Value = period;
+            mySqlCommand.Parameters.Add("?user", MySqlDbType.Int32).Value = user;
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                uzsak.Add(new UzsakymuIstorijaViewModel1
+                {
+                    user = Convert.ToString(item["name"]),
+                    borrow_date = Convert.ToDateTime(item["borrow_date"]),
+                    return_date = Convert.ToDateTime(item["return_date"]),
+                    book = Convert.ToString(item["title"]),
+                    validation_date = Convert.ToDateTime(item["validation_date"])
+                }); ;
+            }
+            return uzsak;
+        }
+
+        public List<MetMenAtaskaitaViewModel1> getMetMenAtaskaita(int? period)
+        {
+            List<MetMenAtaskaitaViewModel1> uzsak = new List<MetMenAtaskaitaViewModel1>();
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
             string sqlquery = @"SELECT 
                                     od.borrow_date, 
                                     od.return_date,
-                                    concat(us.name, ' ', us.surname)
+                                    concat(us.name, ' ', us.surname) name
                                 from 
                                     `order` od
                                         join user us on
@@ -192,7 +259,7 @@ namespace ISP_Biblioteka.Repos
 
             foreach (DataRow item in dt.Rows)
             {
-                uzsak.Add(new UzsakymuIstorijaViewModel1
+                uzsak.Add(new MetMenAtaskaitaViewModel1
                 {
                     user = Convert.ToString(item["name"]),
                     borrow_date = Convert.ToDateTime(item["borrow_date"]),
@@ -210,14 +277,15 @@ namespace ISP_Biblioteka.Repos
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
             string sqlquery = @"SELECT 
                                     od.borrow_date, 
-                                    od.return_date,
+                                    od.return_date--,
                                     concat(us.name, ' ', us.surname)
                                 from 
                                     `order` od
                                         join user us on
                                             od.fk_user_id=us.id and
                                             od.return_date>=IF(?period='', od.return_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.return_date)) and
-                                            od.validation_date is null;";
+                                            od.validation_date is null;
+                                            ";
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlCommand.Parameters.Add("?period", MySqlDbType.Int32).Value = period;
             mySqlConnection.Open();

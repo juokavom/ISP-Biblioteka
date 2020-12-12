@@ -13,6 +13,7 @@ namespace ISP_Biblioteka.ViewModels
         [DisplayName("Pavadinimas")]
         public string title { get; set; }
         [DisplayName("Išleidimo metai ")]
+        [DisplayFormat(DataFormatString = "{0:yyyy}", ApplyFormatInEditMode = true)]
         public DateTime year { get; set; }
         [DisplayName("Puslapiai ")]
         public int pages { get; set; }

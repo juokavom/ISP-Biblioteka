@@ -5,52 +5,17 @@
 <br>
 <br>
 <h2>Užsakymų istorija</h2>
-@if (Session["email"] != null)
+@using (Html.BeginForm())
 {
     <br>
     <br>
     @Html.LabelFor(model => model.period, htmlAttributes: new { @class = "control-label col-md-2" })
     <div class="col-md-10">
         @*@Html.EditorFor(model => model.fk_marke, new { htmlAttributes = new { @class = "form-control" } })*@
-        @Html.DropDownListFor(model => model.period, Model.LaikotarpisList, "", new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.period, Model.LaikotarpisList, new { @class = "form-control" })
         @Html.ValidationMessageFor(model => model.period, "", new { @class = "text-danger" })
     </div>
+    <input type="hidden" name="ExportData" />
     <input class="btn btn-default" type="submit" value="Atrinkti">
 
-    <table class="table table-striped">
-        <tr style="background-color:lightblue">
-            <th>
-                @Html.DisplayNameFor(model => model.uzsak[0].user)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.uzsak[0].borrow_date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.uzsak[0].return_date)
-            </th>
-        </tr>
-
-        @if (Model.uzsak.Count == 0)
-        {
-            <tr>
-                <td colspan="4" align="center"><b style="color:red;">Nurodytu laikotarpiu užsakymų nebuvo atlikta!</b></td>
-            </tr>
-        }
-
-        @foreach (var item in Model.uzsak)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.user)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.borrow_date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.return_date)
-                </td>
-            </tr>
-        }
-
-    </table>
 }

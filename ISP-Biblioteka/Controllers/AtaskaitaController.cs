@@ -7,6 +7,10 @@ using ISP_Biblioteka.Repos;
 using ISP_Biblioteka.ViewModels;
 using System.Net.Mail;
 using System.Net;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using System.IO;
 
 namespace ISP_Biblioteka.Controllers
 {
@@ -15,7 +19,7 @@ namespace ISP_Biblioteka.Controllers
         AtaskaitaRepository repository = new AtaskaitaRepository();
 
         // GET: Ataskaita
-        public ActionResult UzsakymuIstorija(int? period)
+        public ActionResult UzsakymuIstorija(int? period, int? user)
         {
             UzsakymuIstorijaViewModel2 uzsakymai = new UzsakymuIstorijaViewModel2();
 
@@ -23,7 +27,9 @@ namespace ISP_Biblioteka.Controllers
 
             uzsakymai.period = period == null ? null : period;
 
-            uzsakymai.uzsak = repository.getUzsakymuIstorija(uzsakymai.period);
+            uzsakymai.user = user == null ? null : user;
+
+            uzsakymai.uzsak = repository.getUzsakymuIstorija(uzsakymai.period, uzsakymai.user);
 
             return View(uzsakymai);
         }
@@ -98,7 +104,20 @@ namespace ISP_Biblioteka.Controllers
 
             return View(knygos);
         }
-        public ActionResult MetMenAtaskaita(int? period)
+        public ActionResult MetMenAtaskaita()
+        {
+            MetMenAtaskaitaViewModel2 metMenAtask = new MetMenAtaskaitaViewModel2();
+
+            PopulateSelections4(metMenAtask);
+
+            metMenAtask.uzsak = repository.getMetMenAtaskaita(null);
+
+            return View(metMenAtask);
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public FileResult MetMenAtaskaita(string ExportData, int? period)
         {
             MetMenAtaskaitaViewModel2 metMenAtask = new MetMenAtaskaitaViewModel2();
 
@@ -106,10 +125,48 @@ namespace ISP_Biblioteka.Controllers
 
             metMenAtask.period = period == null ? null : period;
 
-            metMenAtask.uzsak = repository.getUzsakymuIstorija(metMenAtask.period);
+            metMenAtask.uzsak = repository.getMetMenAtaskaita(metMenAtask.period);
 
-            return View(metMenAtask);
+            using (MemoryStream stream = new System.IO.MemoryStream())
+            {
+                PdfPTable table = new PdfPTable(3);
+                StringReader reader = new StringReader(ExportData);
+                Document PdfFile = new Document(PageSize.A4);
+                PdfWriter writer = PdfWriter.GetInstance(PdfFile, stream);
+                if(metMenAtask.period == 1)
+                {
+                    PdfPCell cell = new PdfPCell(new Phrase("Menesine knygu pasiemimo ataskaita"));
+                    cell.Colspan = 3;
+                    cell.HorizontalAlignment = 1;
+                    table.AddCell(cell);
+                }
+                else 
+                {
+                    PdfPCell cell = new PdfPCell(new Phrase("Metine knygu pasiemimo ataskaita"));
+                    cell.Colspan = 3;
+                    cell.HorizontalAlignment = 1;
+                    table.AddCell(cell);
+                }
+                PdfFile.Open();
+
+                table.AddCell(Convert.ToString("Pasiskolinimo data"));
+                table.AddCell(Convert.ToString("Grazinti iki"));
+                table.AddCell(Convert.ToString("Vartotojas"));
+
+                foreach (var i in metMenAtask.uzsak)
+                {
+                    table.AddCell(Convert.ToString(i.borrow_date));
+                    table.AddCell(Convert.ToString(i.return_date));
+                    table.AddCell(Convert.ToString(i.user));
+                }
+                PdfFile.Add(table);
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
+                PdfFile.Close();
+                return File(stream.ToArray(), "application/pdf", "ExportData.pdf");
+            }
         }
+
+
         public ActionResult NeaktyvusVartotojai(int? period)
         {
             NeaktyvusViewModel neaktyvus = new NeaktyvusViewModel();
@@ -160,14 +217,22 @@ namespace ISP_Biblioteka.Controllers
         public void PopulateSelections3(UzsakymuIstorijaViewModel2 vart)
         {
             List<SelectListItem> selectListlaikotarpiai = new List<SelectListItem>();
+            List<SelectListItem> selectListUsers = new List<SelectListItem>();
+            var users = repository.getUsers();
+
 
             selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(1), Text = "1 mėnuo" });
             selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(3), Text = "3 mėnesiai" });
             selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(6), Text = "6 mėnesiai" });
             selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(12), Text = "12 mėnesių" });
 
-            vart.LaikotarpisList = selectListlaikotarpiai;
+            foreach (var em in users)
+            {
+                selectListUsers.Add(new SelectListItem() { Value = Convert.ToString(em.Key), Text = em.Value.ToString() });
+            }
 
+            vart.LaikotarpisList = selectListlaikotarpiai;
+            vart.VartotojasList = selectListUsers;
         }
 
         public void PopulateSelections4(MetMenAtaskaitaViewModel2 vart)

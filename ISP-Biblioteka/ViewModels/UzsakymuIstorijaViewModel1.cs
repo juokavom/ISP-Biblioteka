@@ -18,10 +18,19 @@ namespace ISP_Biblioteka.ViewModels
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Grąžinti iki: ")]
+
         public DateTime return_date { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayName("Grąžinimo data: ")]
+        public DateTime validation_date { get; set; }
 
         [DisplayName("Vartotojas: ")]
         public string user { get; set; }
+
+        [DisplayName("Knyga: ")]
+        public string book { get; set; }
 
 
     }
