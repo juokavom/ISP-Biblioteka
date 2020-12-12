@@ -167,5 +167,76 @@ namespace ISP_Biblioteka.Repos
             }
             return knygos;
         }
+
+        public List<UzsakymuIstorijaViewModel1> getUzsakymuIstorija(int? period)
+        {
+            List<UzsakymuIstorijaViewModel1> uzsak = new List<UzsakymuIstorijaViewModel1>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT 
+                                    od.borrow_date, 
+                                    od.return_date,
+                                    concat(us.name, ' ', us.surname)
+                                from 
+                                    `order` od
+                                        join user us on
+                                            od.fk_user_id=us.id and
+                                            od.borrow_date>=IF(?period='', od.borrow_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.borrow_date));";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?period", MySqlDbType.Int32).Value = period;
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                uzsak.Add(new UzsakymuIstorijaViewModel1
+                {
+                    user = Convert.ToString(item["name"]),
+                    borrow_date = Convert.ToDateTime(item["borrow_date"]),
+                    return_date = Convert.ToDateTime(item["return_date"])
+
+                }); ;
+            }
+            return uzsak;
+        }
+
+        public List<IsiskolineViewModel1> getIsiskoline(int? period)
+        {
+            List<IsiskolineViewModel1> isiskoline = new List<IsiskolineViewModel1>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT 
+                                    od.borrow_date, 
+                                    od.return_date,
+                                    concat(us.name, ' ', us.surname)
+                                from 
+                                    `order` od
+                                        join user us on
+                                            od.fk_user_id=us.id and
+                                            od.return_date>=IF(?period='', od.return_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.return_date)) and
+                                            od.validation_date is null;";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?period", MySqlDbType.Int32).Value = period;
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                isiskoline.Add(new IsiskolineViewModel1
+                {
+                    user = Convert.ToString(item["name"]),
+                    borrow_date = Convert.ToDateTime(item["borrow_date"]),
+                    return_date = Convert.ToDateTime(item["return_date"])
+
+                }); ;
+            }
+            return isiskoline;
+        }
     }
 }

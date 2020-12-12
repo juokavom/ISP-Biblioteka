@@ -15,9 +15,17 @@ namespace ISP_Biblioteka.Controllers
         AtaskaitaRepository repository = new AtaskaitaRepository();
 
         // GET: Ataskaita
-        public ActionResult UzsakymuIstorija()
+        public ActionResult UzsakymuIstorija(int? period)
         {
-            return View();
+            UzsakymuIstorijaViewModel2 uzsakymai = new UzsakymuIstorijaViewModel2();
+
+            PopulateSelections3(uzsakymai);
+
+            uzsakymai.period = period == null ? null : period;
+
+            uzsakymai.uzsak = repository.getUzsakymuIstorija(uzsakymai.period);
+
+            return View(uzsakymai);
         }
         public ActionResult AtaskaituSiuntimas()
         {
@@ -67,9 +75,17 @@ namespace ISP_Biblioteka.Controllers
 
             return View(siunt);
         }
-        public ActionResult IsiskolineSkaitytojai()
+        public ActionResult IsiskolineSkaitytojai(int? period)
         {
-            return View();
+            IsiskolineViewModel2 isiskoline = new IsiskolineViewModel2();
+
+            PopulateSelections5(isiskoline);
+
+            isiskoline.period = period == null ? null : period;
+
+            isiskoline.isiskol = repository.getIsiskoline(isiskoline.period);
+
+            return View(isiskoline);
         }
         public ActionResult KnyguStatistika(DateTime? year_from, DateTime? year_to)
         {
@@ -82,9 +98,17 @@ namespace ISP_Biblioteka.Controllers
 
             return View(knygos);
         }
-        public ActionResult MetMenAtaskaita()
+        public ActionResult MetMenAtaskaita(int? period)
         {
-            return View();
+            MetMenAtaskaitaViewModel2 metMenAtask = new MetMenAtaskaitaViewModel2();
+
+            PopulateSelections4(metMenAtask);
+
+            metMenAtask.period = period == null ? null : period;
+
+            metMenAtask.uzsak = repository.getUzsakymuIstorija(metMenAtask.period);
+
+            return View(metMenAtask);
         }
         public ActionResult NeaktyvusVartotojai(int? period)
         {
@@ -130,6 +154,43 @@ namespace ISP_Biblioteka.Controllers
 
             siunt.AtaskaitosList = selectListAtaskTipas;
             siunt.EmailList = selectListEmail;
+
+        }
+
+        public void PopulateSelections3(UzsakymuIstorijaViewModel2 vart)
+        {
+            List<SelectListItem> selectListlaikotarpiai = new List<SelectListItem>();
+
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(1), Text = "1 mėnuo" });
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(3), Text = "3 mėnesiai" });
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(6), Text = "6 mėnesiai" });
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(12), Text = "12 mėnesių" });
+
+            vart.LaikotarpisList = selectListlaikotarpiai;
+
+        }
+
+        public void PopulateSelections4(MetMenAtaskaitaViewModel2 vart)
+        {
+            List<SelectListItem> selectListlaikotarpiai = new List<SelectListItem>();
+
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(1), Text = "Mėnesio" });
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(12), Text = "Metų" });
+
+            vart.LaikotarpisList = selectListlaikotarpiai;
+
+        }
+
+        public void PopulateSelections5(IsiskolineViewModel2 isisk)
+        {
+            List<SelectListItem> selectListlaikotarpiai = new List<SelectListItem>();
+
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(1), Text = "Iki 1 mėnesio" });
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(3), Text = "Iki 3 mėnesių" });
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(6), Text = "Iki 6 mėnesių" });
+            selectListlaikotarpiai.Add(new SelectListItem() { Value = Convert.ToString(12), Text = "Iki 12 mėnesių" });
+
+            isisk.LaikotarpisList = selectListlaikotarpiai;
 
         }
     }
