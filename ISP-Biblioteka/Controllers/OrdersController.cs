@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ISP_Biblioteka.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,16 +22,26 @@ namespace ISP_Biblioteka.Controllers
            
             return View();
         }
-        public ActionResult MakeOrder()
+        public ActionResult MakeOrder(Order  order)
         {
-            Models.Order order = new Models.Order { };
-            order.FK_book_id = 2;
+            int id = order.ID;
+            int bid = order.FK_book_id;
+            return View();
+        }
+        public ActionResult SubmitOrder(int bID)
+        {
+            Order order = new Order { };
+            order.FK_book_id = bID;
             order.createOrderRequest();
-            return View(order);
+            return null;
         }
         public ActionResult OrderRequests()
         {
-            Models.Order order = new Models.Order { };
+            return View();
+        }
+        [HttpPost]
+        public ActionResult OrderRequests(Order order)
+        {
             order.Validation_date = DateTime.Now;
             order.Return_date = DateTime.Now.AddDays(14);
             order.Borrow_date = DateTime.Now.AddDays(1);

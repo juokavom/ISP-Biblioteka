@@ -1,15 +1,26 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-}
+﻿@model ISP_Biblioteka.Models.Newsletter
+
+
+<!DOCTYPE html>
 
 <h2 align="center">Laiškas vartotojams</h2>
+<html>
 <body>
+    @using (Html.BeginForm("Index", "Newsletter", FormMethod.Post))
+    {
     <div align="center">
-        <textarea rows="20" cols="1000" name="letter" form="usrform"></textarea>
+        <div>Tema</div>
+        <div>@Html.TextBoxFor(m => m.Subject)</div>
+        <div> </div>
+        <div>Turinys</div>
     </div>
-    <div class="form-group" align="center">
-        <button class="btn btn-primary" type="submit">Siųsti</button>
-    </div>
-</body>
+        <div align="center">
+            @Html.TextAreaFor(m => m.Content, 30, 20, htmlAttributes: new { style = "width: 50%; max-width: 50%;" })
+        </div>
+        <div class="form-group" align="center">
+            <button class="btn btn-primary" type="submit">Siųsti</button>
+        </div>
+    }
+    </body>
+</html>
 
