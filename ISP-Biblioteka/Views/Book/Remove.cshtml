@@ -1,0 +1,77 @@
+﻿@model ISP_Biblioteka.Models.Book
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Knygos šalinimas</title>
+</head>
+<body onload="start()">
+    <br>
+    <h1 style="text-align:left">Knygos šalinimas</h1>
+    <div id="message1">
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok"></span><strong>
+                Knyga pašalinta!<br />
+            </strong>
+        </div>
+    </div>
+    <div id="message2">
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove"></span><strong>Klaida! Neteisingas slaptažodis.</strong>
+        </div>
+    </div>
+    <div class="modal-dialog two-col">
+        <div class="modal-body col1">
+            <form id="Editing">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Pavadinimas</label>
+                    <input id="title" class="col-sm-4 form-control" type="text" value="@Model.Title" readonly>
+                </div>-->
+                @*<div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Slaptažodis</label>
+                    <input id="password1" class="col-md-4 form-control" type="password">
+                </div>*@
+
+            </form>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit" onclick="SaveForm()">Šalinti</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+    function reroute() {
+        window.location.replace("/Register/Logout/");
+    }
+    function start() {
+        $("#message1").hide();
+        $("#message2").hide();
+    }
+
+    function SaveForm() {
+        @*$("#message1").hide();
+        $("#message2").hide();
+        var passwor1 = $("#password1").val();
+
+        if (passwor1 == "" || passwor1 != "@Model.Password") {
+            $("#message2").show();
+            return false;
+        }*@
+
+
+        $.ajax({
+            type: "post",
+            data: {'email' : "@Model.Title"},
+            url: "/Book/RemoveBook",
+            success: function () {
+                $("#message1").show();
+                reroute();
+            }
+        });
+    }
+</script>

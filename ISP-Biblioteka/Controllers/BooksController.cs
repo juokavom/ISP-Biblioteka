@@ -11,7 +11,12 @@ namespace ISP_Biblioteka.Controllers
         // GET: Book
         public ActionResult Index()
         {
-            return View();
+
+            return View(Models.Books.getBooks());
+        }
+        public ActionResult Search()
+        {
+            return View(Models.Books.getBooks());
         }
         public ActionResult Tvarkyti()
         {
@@ -21,5 +26,7 @@ namespace ISP_Biblioteka.Controllers
         {
             return View();
         }
+
+       
     }
 }

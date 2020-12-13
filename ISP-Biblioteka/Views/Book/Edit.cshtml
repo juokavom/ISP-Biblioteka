@@ -1,0 +1,109 @@
+﻿@model ISP_Biblioteka.Models.Book
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Redagavimas</title>
+</head>
+<body onload="start()">
+    <br>
+    <h1 style="text-align:left">Redagavimas</h1>
+    <div id="message1">
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok"></span><strong>
+                Duomenys išsaugoti!<br />
+            </strong>
+        </div>
+    </div>
+    <div id="message2">
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove"></span><strong>Klaida! Patikrinkite įvedimo laukelius.</strong>
+        </div>
+    </div>
+    <div class="modal-dialog two-col">
+        <div class="modal-body col1">
+            <div class="col2">
+                <img src="@Url.Content(Model.Image.ToString())" width="200" height="200" style="padding:20px">
+            </div>
+            <form id="Editing">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">ID</label>
+                    <input id="id" name="id" class="col-md-4 form-control" type="text" value="@Model.id" readonly>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Pavadinimas</label>
+                    <input id="title" name="title" class="col-sm-4 form-control" type="text" value="@Model.Title" readonly>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Aprašymas</label>
+                    <input id="description" name="description" class="col-sm-4 form-control" type="text" value="@Model.Description" >
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">ISBN</label>
+                    <input id="ISBN" name="ISBN" class="col-sm-4 form-control" type="text" value="@Model.ISBN" >
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Puslapių sk.</label>
+                    <input id="pages" name="pages" class="col-sm-4 form-control" type="number" value="@Model.Pages" >
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Kaina</label>
+                    <input id="price" name="price" class="col-sm-4 form-control" type="number" value="@Model.Price" >
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Išleidimo data</label>
+                    <input id="year" name="year" class="col-sm-4 form-control" type="datetime" value="@Convert.ToString(string.Format("{0:yyy/MM/dd}", Model.Year))" >
+                </div>
+                <div class="form-group row" style="display:none">
+                    <label class="col-sm-2 col-form-label">Nuotrauka</label>
+                    <input id="image" name="image" class="col-sm-4 form-control" type="text" value="@Model.Image" >
+                </div>
+                
+            </form>
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit" onclick="SaveForm()">Išsaugoti</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<style>
+</style>
+
+<script>
+    function start() {
+        $("#message1").hide();
+        $("#message2").hide();
+    }
+
+    function SaveForm() {
+        $("#message1").hide();
+        $("#message2").hide();
+        var description = $("#Description").val();
+        var ISBN = $("#ISBN").val();
+        var pages = $("#Pages").val();
+        var price = $("#Price").val();
+        var year = $("#Year").val();
+
+        if (description == "" || ISBN == "" || pages == "" || price == "" || year == "") {
+            $("#message2").show();
+            return false;
+        }
+
+        var data = $("#Editing").serialize();
+        $.ajax({
+            type: "post",
+            data: data,
+            url: "/Book/EditBook",
+            success: function () {
+                $("#message1").show();
+                $("#Editing").reset();
+            }
+        });
+
+    }
+</script>

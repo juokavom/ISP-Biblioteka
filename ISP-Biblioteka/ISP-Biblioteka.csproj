@@ -178,6 +178,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AtaskaitaController.cs" />
+    <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\NewsLetterController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Books.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Book.cs" />
@@ -258,9 +260,14 @@
     <Content Include="Views\Books\Tvarkyti.cshtml" />
     <Content Include="Views\Books\History.cshtml" />
     <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Book\Create.cshtml" />
+    <Content Include="Views\Book\Edit.cshtml" />
+    <Content Include="Views\Book\Remove.cshtml" />
+    <Content Include="Views\Book\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Image\Book\" />
     <Folder Include="Image\User\" />
   </ItemGroup>
   <ItemGroup>
