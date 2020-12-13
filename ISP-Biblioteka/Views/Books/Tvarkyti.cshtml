@@ -45,36 +45,23 @@
         <th></th>
         <th></th>
         <th>
-            <div class="row">
-                <div class="col-sm-12">
-                    <form id="ratingForm" method="POST">
-                        <div class="form-group">
-                            <button type="button" class="btn btn-default btn-grey btn-sm rateButton" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-default btn-grey btn-sm rateButton" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-default btn-grey btn-sm rateButton" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-default btn-grey btn-sm rateButton" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-default btn-grey btn-sm rateButton" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <input type="hidden" class="form-control" id="rating" name="rating" value="1">
-                            <input type="hidden" class="form-control" id="itemId" name="itemId" value="12345678">
-                        </div>
-                    </form>
-                </div>
-            </div>
+                    <div class="rate">
+        <input type="radio" id="star5" name="garsas" value="5" />
+        <label for="star5" title="text">5 stars</label>
+        <input type="radio" id="star4" name="garsas" value="4" />
+        <label for="star4" title="text">4 stars</label>
+        <input type="radio" id="star3" name="garsas" value="3" />
+        <label for="star3" title="text">3 stars</label>
+        <input type="radio" id="star2" name="garsas" value="2" />
+        <label for="star2" title="text">2 stars</label>
+        <input type="radio" id="star1" name="garsas" value="1" />
+        <label for="star1" title="text">1 star</label>
+        </div>
         </th>
         <th><a class="btn btn-primary" onclick="Rank()">Reitinguoti</th>
-            <th>@Html.ActionLink("Knygų paėmimo istorija", "History", "Books")</th>
+        <th>@Html.ActionLink("Knygų paėmimo istorija", "History", "Books")</th>
 
-            </tbody>
+        </tbody>
     </table>
 
     <div class="modal fade" id="ShowModal">
@@ -104,7 +91,7 @@
             $(`#${removeId}`).hide();
             $.ajax({
                 type: "post",
-                url: "/User/RemoveUser",
+                url: "/Book/RemoveBook",
                 data: { 'id': removeId }
             });
         }
@@ -114,3 +101,51 @@
 
 </body>
 </html>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    }
+
+    .rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+    }
+
+    .rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    }
+
+    .rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+    }
+
+    .rate:not(:checked) > label:before {
+    content: '★ ';
+    }
+
+    .rate > input:checked ~ label {
+    color: #ffc700;
+    }
+
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+    }
+
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+    }
+</style>
