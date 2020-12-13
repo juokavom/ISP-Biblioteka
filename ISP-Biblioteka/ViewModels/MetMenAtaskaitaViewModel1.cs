@@ -22,5 +22,9 @@ namespace ISP_Biblioteka.ViewModels
 
         [DisplayName("Vartotojas ")]
         public string user { get; set; }
+
+        [DisplayName("Knyga ")]
+        public string book { get; set; }
+
     }
 }
