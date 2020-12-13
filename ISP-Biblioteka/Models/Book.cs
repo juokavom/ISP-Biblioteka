@@ -26,6 +26,19 @@ namespace ISP_Biblioteka.Models
         public int Price { get; set; }
         //Nuotraukos kelias
         public string Image { get; set; }
+
+        public Book(DataRow row)
+        {
+            id = Convert.ToInt32(row["id"]);
+            Title = Convert.ToString(row["title"]);
+            Year = Convert.ToDateTime(row["year"]);
+            Description = Convert.ToString(row["description"]);
+            Pages = Convert.ToInt32(row["pages"]);
+            ISBN = Convert.ToString(row["ISBN"]);
+            Creation_date = Convert.ToDateTime(row["creation_date"]);
+            Price = Convert.ToInt32(row["price"]);
+            Image = Convert.ToString(row["image"]);
+        }
        
         public Exception insertToDb()
         {

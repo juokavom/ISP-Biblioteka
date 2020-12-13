@@ -1,4 +1,5 @@
 ﻿
+@model dynamic
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
@@ -21,18 +22,31 @@
         <tr>
             <th style="text-align:center;">Aktyvūs užsakymai</th>
         </tr>
-        <tr>
-            <th>
-                <div align="center">
-                    <h4 style="padding-left:1%">Knyga: Placeholder</h4>
-                    <h5 style="padding-left:1%">Autorius: Placeholder</h5>
-                    <img src="" width="140" height="190">
-                    <h5>Pasiskolinimo data: Placeholder</h5>
-                    <h5>Gražinimo data: Placeholder</h5>
-                </div>
-                <p align="right"><a href="" style="font-size:11px; padding-right:1%;" onclick="return clicked()">Pamečiau knygą</a></p>
-            </th>
-        </tr>
+        @foreach (var order in Model.Order)
+        {
+            if (order.Return_date > DateTime.Now)
+            {
+            <tr>
+                <th>
+                    <div align="center">
+                        @foreach (var book in Model.Book)
+                        {
+                            if (book.id == @order.FK_book_id)
+                            {
+                                <h4 style="padding-left:1%">Knyga: @book.Title</h4>
+
+                                <h5 style="padding-left:1%">Autorius: Placeholder</h5>
+                                <img src="@book.Image" width="140" height="190">
+                            }
+                        }
+                        <h5>Pasiskolinimo data: @order.Borrow_date.Year-@order.Borrow_date.Month-@order.Borrow_date.Day</h5>
+                        <h5>Gražinimo data: @order.Return_date.Year-@order.Return_date.Month-@order.Return_date.Day</h5>
+                    </div>
+                    <p align="right"><a href="" style="font-size:11px; padding-right:1%;" onclick="return clicked()">Pamečiau knygą</a></p>
+                </th>
+            </tr>
+            }
+        }
     </table>
 
 </body>
