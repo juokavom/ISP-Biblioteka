@@ -60,7 +60,7 @@ namespace ISP_Biblioteka.Repos
                                     us.name, 
                                     us.surname,
                                     us.email,
-                                    lo.date
+                                    DATE_FORMAT(lo.date,'%Y-%m-%d') date
                                 from 
                                     user us
                                         join log lo on
@@ -82,7 +82,7 @@ namespace ISP_Biblioteka.Repos
                 body += "<th>" + "Vardas" + "</th>";
                 body += "<th>" + "Pavardė" + "</th>";
                 body += "<th>" + "El. paštas" + "</th>";
-                body += "<th>" + "Prisijungimo data" + "</th>";
+                body += "<th>" + "Paskutinio prisijungimo data" + "</th>";
                 body += "</tr>";
 
 
@@ -106,6 +106,66 @@ namespace ISP_Biblioteka.Repos
                 body += "</table>";
             }
             
+
+            return body;
+        }
+
+        public string getAtaskaitos2()
+        {
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT
+                                    DATE_FORMAT(od.validation_date,'%Y-%m-%d') validation_date,
+                                    DATE_FORMAT(od.borrow_date,'%Y-%m-%d') borrow_date, 
+                                    DATE_FORMAT(od.return_date,'%Y-%m-%d') return_date,
+                                    concat(us.name, ' ', us.surname) name,
+                                    bo.title
+                                from 
+                                    `order` od
+                                        join user us on
+                                            od.fk_user_id=us.id
+                                        join book bo on
+                                            od.fk_book_id =  bo.id";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+            string body = " <h1>Knygų pasiėmimai per pastarąjį 1 mėnesį</h1>";
+            if (dt.Rows.Count > 0)
+            {
+                body += "<table border=" + 1 + ">";
+                body += "<tr>";
+                body += "<th>" + "Vartotojas" + "</th>";
+                body += "<th>" + "Knyga" + "</th>";
+                body += "<th>" + "Pasiėmimo data" + "</th>";
+                body += "<th>" + "Grąžinti iki" + "</th>";
+                body += "<th>" + "Grąžinimo data" + "</th>";
+                body += "</tr>";
+
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    body += "<tr>";
+                    body += "<td>" + item["name"] + "</td>";
+                    body += "<td>" + item["title"] + "</td>";
+                    body += "<td>" + item["borrow_date"] + "</td>";
+                    body += "<td>" + item["return_date"] + "</td>";
+                    body += "<td>" + item["validation_date"] + "</td>";
+                    body += "</tr>";
+                }
+                body += "</table>";
+            }
+            else
+            {
+                body += "<table border=" + 1 + ">";
+                body += "<tr>";
+                body += "<th>" + "Nerasta jokių rezultatų!" + "</th>";
+                body += "</tr>";
+                body += "</table>";
+            }
+
 
             return body;
         }
@@ -168,10 +228,13 @@ namespace ISP_Biblioteka.Repos
                                     bo.pages,
                                     bo.isbn
                                 from 
-                                    book bo;";
+                                    book bo
+                                where
+                                    bo.year>=IF(?year_from='', bo.year, IFNULL(?year_from, bo.year)) and
+                                    bo.year<=IF(?year_to='', bo.year, IFNULL(?year_to, bo.year));";
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?year_from", MySqlDbType.Int32).Value = year_from;
-            mySqlCommand.Parameters.Add("?year_to", MySqlDbType.Int32).Value = year_to;
+            mySqlCommand.Parameters.Add("?year_from", MySqlDbType.Datetime).Value = year_from;
+            mySqlCommand.Parameters.Add("?year_to", MySqlDbType.DateTime).Value = year_to;
             mySqlConnection.Open();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
             DataTable dt = new DataTable();
@@ -241,14 +304,18 @@ namespace ISP_Biblioteka.Repos
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
             string sqlquery = @"SELECT 
-                                    od.borrow_date, 
-                                    od.return_date,
-                                    concat(us.name, ' ', us.surname) name
+                                    od.borrow_date,
+                                    od.return_date, 
+                                    concat(us.name, ' ', us.surname) name,
+                                    bo.title
                                 from 
                                     `order` od
-                                        join user us on
-                                            od.fk_user_id=us.id and
-                                            od.borrow_date>=IF(?period='', od.borrow_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.borrow_date));";
+                                        left join user us on
+                                            od.fk_user_id=us.id
+                                        left join book bo on
+                                            od.fk_book_id = bo.id
+                                where
+                                    od.borrow_date>=IF(?period='', od.borrow_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.borrow_date));";
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlCommand.Parameters.Add("?period", MySqlDbType.Int32).Value = period;
             mySqlConnection.Open();
@@ -263,7 +330,8 @@ namespace ISP_Biblioteka.Repos
                 {
                     user = Convert.ToString(item["name"]),
                     borrow_date = Convert.ToDateTime(item["borrow_date"]),
-                    return_date = Convert.ToDateTime(item["return_date"])
+                    return_date = Convert.ToDateTime(item["return_date"]),
+                    book = Convert.ToString(item["title"])
 
                 }); ;
             }
@@ -277,14 +345,18 @@ namespace ISP_Biblioteka.Repos
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
             string sqlquery = @"SELECT 
                                     od.borrow_date, 
-                                    od.return_date--,
-                                    concat(us.name, ' ', us.surname)
+                                    od.return_date,
+                                    concat(us.name, ' ', us.surname) name,
+                                    bo.title
                                 from 
                                     `order` od
                                         join user us on
-                                            od.fk_user_id=us.id and
-                                            od.return_date>=IF(?period='', od.return_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.return_date)) and
-                                            od.validation_date is null;
+                                            od.fk_user_id=us.id
+                                        left join book bo on
+                                            od.fk_book_id = bo.id
+                                where
+                                    od.return_date>=IF(?period='', od.return_date, IFNULL(DATE_SUB(NOW(), INTERVAL ?period MONTH), od.return_date)) and
+                                    od.validation_date = '0000-00-00';
                                             ";
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlCommand.Parameters.Add("?period", MySqlDbType.Int32).Value = period;
@@ -299,6 +371,7 @@ namespace ISP_Biblioteka.Repos
                 isiskoline.Add(new IsiskolineViewModel1
                 {
                     user = Convert.ToString(item["name"]),
+                    book = Convert.ToString(item["title"]),
                     borrow_date = Convert.ToDateTime(item["borrow_date"]),
                     return_date = Convert.ToDateTime(item["return_date"])
 

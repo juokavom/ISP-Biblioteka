@@ -12,7 +12,7 @@ namespace ISP_Biblioteka.ViewModels
     {
         public List<IsiskolineViewModel1> isiskol { get; set; }
 
-        [DisplayName("Vėluojama grąžini: ")]
+        [DisplayName("Vėluojama grąžinti: ")]
         public int? period { get; set; }
         public IList<SelectListItem> LaikotarpisList { get; set; }
     }

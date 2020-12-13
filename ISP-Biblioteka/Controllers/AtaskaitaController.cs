@@ -48,10 +48,16 @@ namespace ISP_Biblioteka.Controllers
             PopulateSelections2(siunt);
             string text = "";
             string sub = "";
+            
             if (siunt.ataskaitos_tipas == 1)
             {
                 text = repository.getAtaskaitos();
                 sub = "Neprisijungę vartotojai per 6 mėnesius";
+            }
+            else if(siunt.ataskaitos_tipas == 2)
+            {
+                text = repository.getAtaskaitos2();
+                sub = "Knygų užsakymai (1 mėnesio)";
             }
                 
 
@@ -129,35 +135,37 @@ namespace ISP_Biblioteka.Controllers
 
             using (MemoryStream stream = new System.IO.MemoryStream())
             {
-                PdfPTable table = new PdfPTable(3);
+                PdfPTable table = new PdfPTable(4);
                 StringReader reader = new StringReader(ExportData);
                 Document PdfFile = new Document(PageSize.A4);
                 PdfWriter writer = PdfWriter.GetInstance(PdfFile, stream);
                 if(metMenAtask.period == 1)
                 {
                     PdfPCell cell = new PdfPCell(new Phrase("Menesine knygu pasiemimo ataskaita"));
-                    cell.Colspan = 3;
+                    cell.Colspan = 4;
                     cell.HorizontalAlignment = 1;
                     table.AddCell(cell);
                 }
                 else 
                 {
                     PdfPCell cell = new PdfPCell(new Phrase("Metine knygu pasiemimo ataskaita"));
-                    cell.Colspan = 3;
+                    cell.Colspan = 4;
                     cell.HorizontalAlignment = 1;
                     table.AddCell(cell);
                 }
                 PdfFile.Open();
 
+                table.AddCell(Convert.ToString("Vartotojas"));
+                table.AddCell(Convert.ToString("Knyga"));
                 table.AddCell(Convert.ToString("Pasiskolinimo data"));
                 table.AddCell(Convert.ToString("Grazinti iki"));
-                table.AddCell(Convert.ToString("Vartotojas"));
 
                 foreach (var i in metMenAtask.uzsak)
                 {
-                    table.AddCell(Convert.ToString(i.borrow_date));
-                    table.AddCell(Convert.ToString(i.return_date));
                     table.AddCell(Convert.ToString(i.user));
+                    table.AddCell(Convert.ToString(i.book));
+                    table.AddCell(i.borrow_date.ToString("dd/MM/yyyy"));
+                    table.AddCell(i.return_date.ToString("dd/MM/yyyy"));
                 }
                 PdfFile.Add(table);
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, PdfFile, reader);
@@ -200,9 +208,7 @@ namespace ISP_Biblioteka.Controllers
             var email = repository.getEmail();
 
             selectListAtaskTipas.Add(new SelectListItem() { Value = Convert.ToString(1), Text = "Neaktyvūs vartotojai (6 mėnesiai)", Selected = true });
-            selectListAtaskTipas.Add(new SelectListItem() { Value = Convert.ToString(3), Text = "test" });
-            selectListAtaskTipas.Add(new SelectListItem() { Value = Convert.ToString(6), Text = "test" });
-            selectListAtaskTipas.Add(new SelectListItem() { Value = Convert.ToString(12), Text = "test" });
+            selectListAtaskTipas.Add(new SelectListItem() { Value = Convert.ToString(2), Text = "Knygų užsakymai(1 mėnuo)" });
 
             foreach (var em in email)
             {

@@ -12,11 +12,11 @@ namespace ISP_Biblioteka.ViewModels
     {
         [DisplayName("Vardas")]
         public string name { get; set; }
-        [DisplayName("Pavardė: ")]
+        [DisplayName("Pavardė ")]
         public string surname { get; set; }
-        [DisplayName("El. paštas: ")]
+        [DisplayName("El. paštas ")]
         public string email { get; set; }
-        [DisplayName("Paskutinis prisijungimas: ")]
+        [DisplayName("Paskutinis prisijungimas ")]
         public DateTime last_login { get; set; }
     }
 }
