@@ -42,11 +42,15 @@ namespace ISP_Biblioteka.Models
                 string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
                 string sqlquery = @"INSERT INTO `order`(`id`, `borrow_date`, `return_date`, `validation_date`, `fk_book_id`, `fk_rating_id`, `fk_user_id`) " +
-                       "VALUES(NOW(),null,null,null,?fk_book_id,null,?fk_user_id);";
+                       "VALUES(null,?borrow_date,?return_date,?validation_date,?fk_book_id,?fk_rating_id,?fk_user_id);";
 
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?return_date", MySqlDbType.Date).Value = DateTime.MinValue;
+                mySqlCommand.Parameters.Add("?validation_date", MySqlDbType.Date).Value = DateTime.MinValue.AddYears(1);
+                mySqlCommand.Parameters.Add("?borrow_date", MySqlDbType.Date).Value = DateTime.Now;
                 mySqlCommand.Parameters.Add("?fk_book_id", MySqlDbType.Int32).Value = FK_book_id;
-                mySqlCommand.Parameters.Add("?fk_user_id", MySqlDbType.Int32).Value = FK_book_id;
+                mySqlCommand.Parameters.Add("?fk_user_id", MySqlDbType.Int32).Value = FK_user_id;
+                mySqlCommand.Parameters.Add("?fk_rating_id", MySqlDbType.Int32).Value = FK_rating_id;
                 mySqlConnection.Open();
                 mySqlCommand.ExecuteNonQuery();
                 mySqlConnection.Close();
@@ -109,6 +113,61 @@ namespace ISP_Biblioteka.Models
                 }
                 }
                 catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e;
+            }
+        }
+
+        public Exception lostOrder()
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"SELECT * FROM `order` WHERE `id` = ?id";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = ID;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                ID = Convert.ToInt16(dt.Rows[0]["id"]);
+                FK_book_id = Convert.ToInt32(dt.Rows[0]["fk_book_id"]);
+                FK_rating_id = Convert.ToInt32(dt.Rows[0]["fk_rating_id"]);
+                FK_user_id = Convert.ToInt32(dt.Rows[0]["fk_user_id"]);
+
+                try
+                {
+
+                    sqlquery = @"UPDATE `order` SET `id`=?id,`borrow_date`=?borrow_date, `return_date`=?return_date,`validation_date`=?validation_date," +
+                        "`fk_book_id`=?fk_book_id,`fk_rating_id`=?fk_rating_id, `fk_user_id`=?fk_user_id WHERE `id`=?id";
+
+                    mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                    mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = ID;
+                    mySqlCommand.Parameters.Add("?borrow_date", MySqlDbType.Date).Value = Borrow_date;
+                    mySqlCommand.Parameters.Add("?return_date", MySqlDbType.Date).Value = Return_date;
+                    mySqlCommand.Parameters.Add("?validation_date", MySqlDbType.Date).Value = Validation_date;
+                    mySqlCommand.Parameters.Add("?fk_book_id", MySqlDbType.Int32).Value = FK_book_id;
+                    mySqlCommand.Parameters.Add("?fk_rating_id", MySqlDbType.Int32).Value = FK_rating_id;
+                    mySqlCommand.Parameters.Add("?fk_user_id", MySqlDbType.Int32).Value = FK_user_id;
+                    mySqlConnection.Open();
+                    mySqlCommand.ExecuteNonQuery();
+                    mySqlConnection.Close();
+
+                    return null;
+                }
+
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return e;
+                }
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e);
                 return e;
@@ -180,13 +239,26 @@ namespace ISP_Biblioteka.Models
 
             return allUsers;
         }
-
-        public Order(DataRow row)
+        public static List<Author> getAuthor()
         {
-            ID = Convert.ToInt16(row["id"]);
-            Borrow_date = Convert.ToDateTime(row["borrow_date"]);
-            Return_date = Convert.ToDateTime(row["return_date"]);
-            Validation_date = Convert.ToDateTime(row["validation_date"]);
+            List<Author> author = new List<Author>();
+            string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT * FROM `author`";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            mySqlCommand.ExecuteNonQuery();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                author.Add(new Author(dt.Rows[i]));
+            }
+
+            return author;
         }
     }
 }

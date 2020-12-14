@@ -26,6 +26,7 @@ namespace ISP_Biblioteka.Models
         public int Price { get; set; }
         //Nuotraukos kelias
         public string Image { get; set; }
+        public int FK_author_id { get; set; }
         public Book()
         {
 
@@ -42,6 +43,7 @@ namespace ISP_Biblioteka.Models
             Creation_date = Convert.ToDateTime(row["creation_date"]);
             Price = Convert.ToInt16(row["price"]);
             Image = Convert.ToString(row["image"]);
+            FK_author_id = Convert.ToInt32(row["fk_author_id"]);
         }
 
         public Exception insertToDb()

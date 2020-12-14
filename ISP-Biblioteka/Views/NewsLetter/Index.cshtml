@@ -1,5 +1,7 @@
 ﻿@model ISP_Biblioteka.Models.Newsletter
-
+@{
+    ViewBag.Title = "Naujienlaiskis";
+}
 
 <!DOCTYPE html>
 
@@ -8,19 +10,20 @@
 <body>
     @using (Html.BeginForm("Index", "Newsletter", FormMethod.Post))
     {
-    <div align="center">
-        <div>Tema</div>
-        <div>@Html.TextBoxFor(m => m.Subject)</div>
-        <div> </div>
-        <div>Turinys</div>
-    </div>
+        <div align="center">
+            <div>Tema</div>
+            <div>@Html.TextBoxFor(m => m.Subject)</div>
+            <div> </div>
+            <div>Turinys</div>
+        </div>
         <div align="center">
             @Html.TextAreaFor(m => m.Content, 30, 20, htmlAttributes: new { style = "width: 50%; max-width: 50%;" })
         </div>
         <div class="form-group" align="center">
             <button class="btn btn-primary" type="submit">Siųsti</button>
+            @Html.Label("", (string)ViewBag.Message)
         </div>
     }
-    </body>
+</body>
 </html>
 

@@ -50,5 +50,27 @@ namespace ISP_Biblioteka.Models
             }
 
         }
+
+        public static List<User> getUsers()
+        {
+            List<User> user = new List<User>();
+            string conn = ConfigurationManager.ConnectionStrings["Mysqlconnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"SELECT * FROM `user`";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            mySqlCommand.ExecuteNonQuery();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                user.Add(new User(dt.Rows[i]));
+            }
+
+            return user;
+        }
     }
 }

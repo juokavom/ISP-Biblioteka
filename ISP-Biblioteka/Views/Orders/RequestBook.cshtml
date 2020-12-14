@@ -1,33 +1,21 @@
 ﻿
-@{
-    ViewBag.Title = "RequestBook";
-}
-
 <h2 align="center">Knygos prašymas</h2>
 <body>
     <div class="modal-dialog two-col">
         <div class="modal-body col1">
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Pavadinimas</label>
-                <input id="Name" name="Name" class="col-sm-4 form-control" type="text" value="">
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Autorius</label>
-                <input id="Author" name="Author" class="col-sm-4 form-control" type="text" value="">
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" type="submit" onclick="return clicked()">Patvirtinti</button>
-            </div>
+            @using (Html.BeginForm("RequestBook", "Orders", FormMethod.Post))
+            {
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Pavadinimas</label>
+
+                        <input id="name" name="name" class="col-sm-4 form-control" type="text"/>
+                    </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Prašyti</button>
+
+                </div>}
         </div>
+            
     </div>
 </body>
 
-<script type="text/javascript">
-    function clicked() {
-        if (confirm('Patvirtinti?')) {
-        } else {
-            return false;
-        }
-    }
-
-</script>
