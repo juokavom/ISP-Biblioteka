@@ -1,0 +1,254 @@
+﻿@model List<Location>
+@using ISP_Biblioteka.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<!DOCTYPE html>
+
+
+<html>
+
+<head>
+    <script>
+        $(function () {
+            $("#inventoryType").change(function () {
+                var inventoryType = $('option:selected', this).attr(val);
+                $('#type').val(inventoryType);
+            });
+        });
+
+        $(function () {
+            $("#locationSelect").change(function () {
+                var locationID = $('option:selected', this).attr(val);
+                $('#location').val(locationID);
+            });
+        });
+    </script>
+
+    <style>
+        #inventorySearchBar {
+            max-width: 800px;
+            position: relative;
+            margin: 0;
+            margin-top: 4%;
+            margin-bottom: 0px;
+            left: 50%;
+            padding: 0px;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .alignedBar {
+            position: relative;
+            margin: 0;
+            margin-top: 4%;
+            margin-bottom: 0px;
+            left: 50%;
+            padding: 0px;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body onload="HideMessages()">
+    <div id="searchArea" class="col text-center">
+        <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#registerInventory" style="margin-top:25px;"> <!--data-url="//Url.Action("Create")"-->Pridėti</button>
+        <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#registerLocation" style="margin-top:25px;"> <!--data-url="//Url.Action("Create")"-->Nauja lokacija</button>
+
+        <form id="searchForm" action="" method="post">
+            <input class="form-control input-lg" id="inventorySearchBar" type="text" name="searchName" placeholder="Ieškomas inventorius..." />
+            <small class="form-text text-muted" id="inventorySearchBarLabel">Įveskite ieškomo daikto pavadinimą arba ID.</small>
+            <!--<div class="col text-center">
+            <input class="form-check-input" type="checkbox" id="checkboxKnyga" name="checkboxKnyga" value="Knygos" />
+            <label class="form-check-label" for="checkboxKnyga">Knygos</label>
+
+            <input class="form-check-input" type="checkbox" id="checkboxKompiuterija" name="checkboxKompiuterija"value="Knygos" />
+            <label class="form-check-label" for="checkboxKnyga">Kompiuterija</label>
+
+            <input class="form-check-input" type="checkbox" id="checkboxBaldai"name="checkboxBaldai" value="Knygos" />
+            <label class="form-check-label" for="checkboxKnyga">Baldai</label>
+        </div>-->
+            <div class="col text-center">
+                <button class="btn btn-primary btn-lg">Ieškoti</button>
+            </div>
+        </form>
+
+        <div class="modal" id="registerInventory" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" style="margin-top:15px"></button>
+                        <h4>Registruoti inventorių</h4>
+                        <div id="message1">
+                            <div class="alert alert-success">
+                                <span class="glyphicon glyphicon-ok"></span><strong>
+                                    Inventorius pridėtas<br />
+                                </strong>
+                            </div>
+                        </div>
+                        <div id="message2">
+                            <div class="alert alert-danger">
+                                <span class="glyphicon glyphicon-remove"></span><strong>Nepavyko pridėti inventoriaus</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="addInventoryForm" action="Inventory/AddInventory" method="post">
+                            <small class="form-text text-muted" id="addInventoryNameLabel">Įveskite pridedamo inventoriaus pavadinimą</small>
+                            <input class="form-control input col text-center alignedBar" id="addInventoryName" name="name" type="text" placeholder="Pavadinimas" />
+
+                            <!--<small class="form-text text-muted" id="addInventoryIDLabel">Įveskite pridedamo inventoriaus ID</small>
+    <input class="form-control input col text-center alignedBar" id="addInventoryID" name="id" type="text" placeholder="ID" />-->
+
+                            <small class="form-text text-muted" id="addInventoryCostLabel">Įveskite pridedamo inventoriaus kainą</small>
+                            <input class="form-control input col text-center alignedBar" id="addInventoryCost" name="cost" type="text" placeholder="Kaina" />
+
+                            <small class="form-text text-muted" id="addInventoryCountLabel">Įveskite pridedamo inventoriaus kiekį</small>
+                            <input class="form-control input col text-center alignedBar" id="addInventoryCount" name="count" type="text" placeholder="Kiekis" />
+
+                            <small class="form-text text-muted" id="addInventoryTypeLabel">Pasirinkite inventoriaus tipą</small><br />
+                            <input type="text" hidden id="type" name="InvType" />
+                            <select name="type" id="inventoryType">
+                                @foreach (string type in Enum.GetNames(typeof(Inventory.InventoryTypes)))
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select><br />
+                            <small class="form-text text-muted" id="addInventoryEndDateLabel" style="margin-top:20px">Galiojimo terminas</small><br />
+                            <input type="date" name="expirationDate" min="@DateTime.Today.Year-@DateTime.Today.Month-@DateTime.Today.Day" /><br />
+
+                            <input type="text" hidden id="location" name="location" />
+                            <small class="form-text text-muted" id="addInventoryLocationLabel">Vieta</small><br />
+                            <select name="loc" id="locationSelect">
+                                @foreach (Location loc in (ViewData["Locations"] as List<Location>))
+                                {
+                                    <option value="@loc.id">@loc</option>
+                                }
+                            </select>
+                            <div class="modal-footer col text-center">
+                                <button type="submit" class="btn btn-primary">Saugoti</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="registerLocation" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" style="margin-top:15px"></button>
+                        <h4>Nauja talpykla</h4>                        
+
+                    <div class="modal-body">
+                        <form id="addLocationForm" action="Location/Add" method="post">
+                            <small class="form-text text-muted" id="addInventoryNameLabel">Zona</small>
+                            <input class="form-control input col text-center alignedBar" id="addLocationZone" name="zoneName" type="text" placeholder="Pavadinimas" />
+
+                            <small class="form-text text-muted" id="addInventoryCostLabel">Lentyna</small>
+                            <input class="form-control input col text-center alignedBar" id="addLocationNumber" name="shelfNumber" type="text" placeholder="Kaip bus pažymėta lentyna" />
+
+                            <small class="form-text text-muted" id="addInventoryCountLabel">Lentynos eilė</small>
+                            <input class="form-control input col text-center alignedBar" id="addLocationRow" name="shelfRow" type="text" placeholder="Lentynos eilė" />
+
+                            <div class="modal-footer col text-center">
+                                <button type="submit" class="btn btn-primary">Saugoti</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+
+
+
+    <div style="margin:auto">
+        <table id="inventoryResultsDisplay" style="margin:auto" class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" style="text-align:center">Veiksmai</th>
+                    <th scope="col" style="text-align:center">ID</th>
+                    <th scope="col" style="text-align:center">Pavadinimas</th>
+                    <th scope="col" style="text-align:center">Tipas</th>
+                    <th scope="col" style="text-align:center">Kiekis</th>
+                    <th scope="col" style="text-align:center">Vieta</th>
+                    <th scope="col" style="text-align:center">Vnt. kaina</th>
+                    <th scope="col" style="text-align:center">Reg. data</th>
+                    <th scope="col" style="text-align:center">Galioja iki</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Inventory inv in (ViewData["Inventory"] as List<Inventory>))
+                {
+                <tr>
+                    <td style="padding:0; text-align:center">
+                        @Html.ActionLink("Keisti", "Edit", "Inventory", new { id = inv.id }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Nurašyti", "WriteOff", "Inventory", new { id = inv.id }, new { @class = "btn btn-warning" })
+                        <!--<a class="btn btn-warning" onclick="remove(@inv.id)">Pašalinti-->
+                    </td>
+                    <td style="text-align:center">@inv.id</td>
+                    <td style="text-align:center">@inv.name</td>
+                    <td style="text-align:center">@inv.type</td>
+                    <td style="text-align:center">@inv.count</td>
+                    <td style="text-align:center">@inv.locationDescription</td>
+                    <td style="text-align:center">@inv.cost</td>
+                    <td style="text-align:center">@inv.registrationDate</td>
+                    <td style="text-align:center">@inv.expirationDate</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal" id="modal-inventory">
+
+    </div>
+
+    <script>
+        function AddInventory() {
+            var data = $("#addInventoryForm").serialize();
+            $.ajax({
+                type: "post",
+                data: data,
+                url: "/Inventory/AddInventory",
+                success: function () {
+                    HideMessages();
+                    $("#message1").show();
+                }
+
+            });
+        }
+
+        function HideMessages() {
+            $("#message1").hide();
+            $("#message2").hide();
+        }
+
+        var writeOffID;
+        function writeOff(id) {
+            writeOffID = id;
+            document.getElementById("writeOffInv").innerHTML = `Tikrai nurašyti inventorių ${name} (ID ${id})?`;
+            $("#ShowModal").modal();
+        }
+        function Removed() {
+            $("#ShowModal").modal('hide');
+            $(`#${removeId}`).hide();
+            $.ajax({
+                type: "post",
+                url: "/Inventory/WriteOff",
+                data: { 'id': removeId }
+            });
+        }
+    </script>
+</body>
+</html>

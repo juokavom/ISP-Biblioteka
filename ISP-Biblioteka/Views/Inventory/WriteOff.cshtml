@@ -1,0 +1,85 @@
+﻿@model ISP_Biblioteka.Models.Inventory
+
+@{
+    ViewBag.Title = "Nurašyti";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="margin:auto; text-align:center">
+
+    <h3>Ar tikrai norite nurašyti <b>@Model.name (ID @Model.id)</b>?</h3>
+    <hr />
+
+
+    @using (Html.BeginForm("UpdateWriteOff", "Inventory", FormMethod.Post))
+    {
+        <dl style="text-align:center; margin:auto">
+
+            <dd>
+                <label for="name" class="control-label">Pavadinimas:</label>
+                @Html.DisplayFor(model => model.name)
+            </dd>
+
+            <dd>
+                <label for="cost" class="control-label">Kaina:</label>
+                @Html.DisplayFor(model => model.cost)
+            </dd>
+
+            <dd>
+                <label for="registrationDate" class="control-label">Reg. data:</label>
+                @Html.DisplayFor(model => model.registrationDate)
+            </dd>
+
+            <dd>
+                <label for="expirationDate" class="control-label">Galioja iki:</label>
+                @Html.DisplayFor(model => model.expirationDate)
+            </dd>
+
+
+            <dd>
+                <label for="count" class="control-label">Nurašyti vienetų:</label>
+                <input class="form-control input col text-center alignedBar" id="writeOffCount" name="writeOffCount" type="number" placeholder="Kiekis" value="@Model.count" max="@Model.count" />
+            </dd>
+
+
+        </dl>
+
+
+        @Html.AntiForgeryToken()
+        <br />
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comment" placeholder="Komentaras (nebūtina)..." style="margin:auto"></textarea><br />
+        <div class="form-actions no-color">
+            <input type="submit" value="Šalinti" class="btn btn-default" /> <br />
+            @Html.ActionLink("Atgal", "Index")
+        </div>
+
+    }
+
+
+
+
+
+
+
+
+
+</div>
+
+    <style>
+
+        dl > * {
+            margin: auto;
+        }
+
+        dl > label, dt {
+            margin-bottom: 0px;
+        }
+
+        #writeOffCount {
+            padding-top: 0px;
+            padding-bottom: 0px;
+            height: 25px;
+            width: 100px;
+            margin: auto;
+            margin-bottom: 5px;
+        }
+    </style>
